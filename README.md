@@ -14,4 +14,5 @@
 All builds will be in `build/distributions`
 
 svarka-0.0.2-installer.jar - is the installer for libraries and default minecraft-server.jar
+
 svarka-0.0.2-universal.jar - is the server we should run it
