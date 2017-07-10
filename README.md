@@ -1,4 +1,4 @@
-## Building Swarka
+## Building Svarka
 * Checkout project
   * You can use IDE or clone from console:
   `git clone https://github.com/fewizz/Svarka.git`
