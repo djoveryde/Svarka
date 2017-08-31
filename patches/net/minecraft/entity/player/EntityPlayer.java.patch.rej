@@ -1,0 +1,13 @@
+++++ REJECTED PATCH 2
+     public double chasingPosX;
+     public double chasingPosY;
+     public double chasingPosZ;
+-    protected boolean sleeping;
++    public boolean sleeping;
+     public BlockPos playerLocation;
+-    private int sleepTimer;
++    public int sleepTimer;
+     public float renderOffsetX;
+     @SideOnly(Side.CLIENT)
+     public float renderOffsetY;
+++++ END PATCH

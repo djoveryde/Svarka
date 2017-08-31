@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 2
+     {
+         slotIn.slotNumber = this.inventorySlots.size();
+         this.inventorySlots.add(slotIn);
+-        this.inventoryItemStacks.add((ItemStack)null);
++        this.inventoryItemStacks.add(null);
+         return slotIn;
+     }
+ 
+++++ END PATCH

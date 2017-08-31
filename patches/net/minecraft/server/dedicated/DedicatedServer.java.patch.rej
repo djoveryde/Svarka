@@ -1,0 +1,60 @@
+++++ REJECTED PATCH 2
+     private static final Pattern field_189647_l = Pattern.compile("^[a-fA-F0-9]{40}$");
+     public final List<PendingCommand> pendingCommandList = Collections.<PendingCommand>synchronizedList(Lists.<PendingCommand>newArrayList());
+     private RConThreadQuery theRConThreadQuery;
+-    private final RConConsoleSource rconConsoleSource = new RConConsoleSource(this);
++    public final RConConsoleSource rconConsoleSource = new RConConsoleSource(this);
+     private RConThreadMain theRConThreadMain;
+-    private PropertyManager settings;
++    public PropertyManager settings;
+     private ServerEula eula;
+     private boolean canSpawnStructures;
+     private GameType gameType;
+     private boolean guiIsEnabled;
+     public static boolean allowPlayerLogins = false;
+ 
+-    public DedicatedServer(File anvilFileIn, DataFixer dataFixerIn, YggdrasilAuthenticationService authServiceIn, MinecraftSessionService sessionServiceIn, GameProfileRepository profileRepoIn, PlayerProfileCache profileCacheIn)
++    public DedicatedServer(joptsimple.OptionSet options/*, File anvilFileIn*/, DataFixer dataFixerIn, YggdrasilAuthenticationService authServiceIn, MinecraftSessionService sessionServiceIn, GameProfileRepository profileRepoIn, PlayerProfileCache profileCacheIn)
+     {
+-        super(anvilFileIn, Proxy.NO_PROXY, dataFixerIn, authServiceIn, sessionServiceIn, profileRepoIn, profileCacheIn);
++        super(options, Proxy.NO_PROXY, dataFixerIn, authServiceIn, sessionServiceIn, profileRepoIn, profileCacheIn);
+         Thread thread = new Thread("Server Infinisleeper")
+         {
+             {
+++++ END PATCH
+++++ REJECTED PATCH 7
+                     LOGGER.info("Starting remote control listener");
+                     this.theRConThreadMain = new RConThreadMain(this);
+                     this.theRConThreadMain.startThread();
++                    this.remoteConsole = new CraftRemoteConsoleCommandSender(this.rconConsoleSource); // CB
+                 }
++                // CraftBukkit start
++                if (this.server.getBukkitSpawnRadius() > -1) {
++                	DedicatedServer.LOGGER.info("'settings.spawn-radius' in bukkit.yml has been moved to 'spawn-protection' in server.properties. I will move your config for you.");
++                	this.settings.serverProperties.remove("spawn-protection");
++                	this.settings.getIntProperty("spawn-protection", this.server.getBukkitSpawnRadius());
++                	this.server.removeBukkitSpawnRadius();
++                	this.settings.saveProperties();
++                }
++                // CraftBukkit end
+ 
+                 if (this.getMaxTickTime() > 0L)
+                 {
+++++ END PATCH
+++++ REJECTED PATCH 8
+         while (!this.pendingCommandList.isEmpty())
+         {
+             PendingCommand pendingcommand = (PendingCommand)this.pendingCommandList.remove(0);
+-            this.getCommandManager().executeCommand(pendingcommand.sender, pendingcommand.command);
++            //this.getCommandManager().executeCommand(pendingcommand.sender, pendingcommand.command);
++            // CraftBukkit start - ServerCommand for preprocessing
++            ServerCommandEvent event = new ServerCommandEvent(console, pendingcommand.command);
++            server.getPluginManager().callEvent(event);
++            if (event.isCancelled()) continue;
++            pendingcommand = new PendingCommand(event.getCommand(), pendingcommand.sender);
++            server.dispatchServerCommand(console, pendingcommand);
++            // CraftBukkit end
+         }
+     }
+ 
+++++ END PATCH

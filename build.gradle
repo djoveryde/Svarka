@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "http://files.minecraftforge.net/maven/"
         }
         maven {
             name = "sonatype"
@@ -11,7 +11,9 @@ buildscript {
         }
     }
     dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'//files('SForgeGradle-2.2-SNAPSHOT.jar')//'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		//files('SForgeGradle-2.2-SNAPSHOT.jar')
+		//'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
 		//classpath files('FG.jar')
 	}
 }
@@ -46,13 +48,13 @@ tasks.withType(JavaCompile) {
 }
 
 minecraft {
-    version = "1.10.2"
-    mappings = 'snapshot_nodoc_20160518'
+    version = "1.12.1"
+    mappings = 'snapshot_nodoc_20170831'
     workspaceDir = "projects"
-    versionJson = "jsons/1.10.2-svarka-dev.json"
+    versionJson = "jsons/1.12.1-dev.json"
     buildUserdev = true
     buildInstaller = true
-	installerVersion = '1.4'
+	installerVersion = '1.5'
 
     def common = {
         patchPrefixOriginal "../src-base/minecraft"
@@ -103,7 +105,7 @@ launch4j {
     outfile = file("build/distributions/${project.name}-${project.version}-installer-win.exe").canonicalPath
     icon = file('icon.ico').canonicalPath
     manifest = file('l4jManifest.xml').canonicalPath
-    jreMinVersion = '1.6.0'
+    jreMinVersion = '1.8.0'
     initialHeapPercent = 5;
     maxHeapPercent = 100;
 }
@@ -138,12 +140,12 @@ outputJar {
     manifest.attributes([
         "Main-Class": "net.minecraftforge.fml.relauncher.ServerLaunchWrapper",
         "TweakClass": "net.minecraftforge.fml.common.launcher.FMLTweaker",
-        "Class-Path": getServerClasspath(file("jsons/1.10.2-svarka-rel.json"))
+        "Class-Path": getServerClasspath(file("jsons/1.12.1-rel.json"))
     ])
 }
 
 processJson {
-    releaseJson = "jsons/1.10.2-svarka-rel.json"
+    releaseJson = "jsons/1.12.1-rel.json"
     addReplacements([
         "@minecraft_version@": project.minecraft.version,
         "@version@": project.version,

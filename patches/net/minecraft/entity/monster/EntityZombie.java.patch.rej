@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+         }
+     }
+ 
+-    protected boolean canDespawn()
++    public boolean canDespawn()
+     {
+         return !this.isConverting();
+     }
+++++ END PATCH

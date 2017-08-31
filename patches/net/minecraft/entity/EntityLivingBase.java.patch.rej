@@ -1,0 +1,366 @@
+++++ REJECTED PATCH 1
+ import net.minecraft.entity.item.EntityBoat;
+ import net.minecraft.entity.item.EntityItem;
+ import net.minecraft.entity.item.EntityXPOrb;
++import net.minecraft.entity.passive.EntityAnimal;
+ import net.minecraft.entity.passive.EntityHorse;
++import net.minecraft.entity.passive.EntityTameable;
+ import net.minecraft.entity.passive.EntityWolf;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+++++ END PATCH
+++++ REJECTED PATCH 3
+ import net.minecraft.potion.Potion;
+ import net.minecraft.potion.PotionEffect;
+ import net.minecraft.potion.PotionUtils;
++import net.minecraft.stats.StatList;
+ import net.minecraft.util.CombatRules;
+ import net.minecraft.util.CombatTracker;
+ import net.minecraft.util.DamageSource;
+++++ END PATCH
+++++ REJECTED PATCH 4
+ import net.minecraft.world.WorldServer;
+ import net.minecraftforge.fml.relauncher.Side;
+ import net.minecraftforge.fml.relauncher.SideOnly;
++import com.google.common.base.Function;
++import com.google.common.collect.Lists;
++import java.util.ArrayList;
++import org.bukkit.Location;
++import org.bukkit.craftbukkit.attribute.CraftAttributeMap;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.entity.Player;
++import org.bukkit.event.entity.EntityDamageEvent;
++import org.bukkit.event.entity.EntityRegainHealthEvent;
++import org.bukkit.event.entity.EntityTeleportEvent;
++import org.bukkit.event.player.PlayerItemConsumeEvent;
+ 
++//CraftBukkit start
++import java.util.ArrayList;
++import com.google.common.base.Function;
++import com.google.common.collect.Lists;
++import org.bukkit.Location;
++import org.bukkit.craftbukkit.attribute.CraftAttributeMap;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.entity.Player;
++import org.bukkit.event.entity.EntityDamageEvent;
++import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
++import org.bukkit.event.entity.EntityRegainHealthEvent;
++import org.bukkit.event.entity.EntityTeleportEvent;
++import org.bukkit.event.player.PlayerItemConsumeEvent;
++// CraftBukkit end
++
+ public abstract class EntityLivingBase extends Entity
+ {
+     private static final UUID SPRINTING_SPEED_BOOST_ID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
+     private static final AttributeModifier SPRINTING_SPEED_BOOST = (new AttributeModifier(SPRINTING_SPEED_BOOST_ID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
+     protected static final DataParameter<Byte> HAND_STATES = EntityDataManager.<Byte>createKey(EntityLivingBase.class, DataSerializers.BYTE);
+-    private static final DataParameter<Float> HEALTH = EntityDataManager.<Float>createKey(EntityLivingBase.class, DataSerializers.FLOAT);
++    public static final DataParameter<Float> HEALTH = EntityDataManager.<Float>createKey(EntityLivingBase.class, DataSerializers.FLOAT);
+     private static final DataParameter<Integer> POTION_EFFECTS = EntityDataManager.<Integer>createKey(EntityLivingBase.class, DataSerializers.VARINT);
+     private static final DataParameter<Boolean> HIDE_PARTICLES = EntityDataManager.<Boolean>createKey(EntityLivingBase.class, DataSerializers.BOOLEAN);
+     private static final DataParameter<Integer> ARROW_COUNT_IN_ENTITY = EntityDataManager.<Integer>createKey(EntityLivingBase.class, DataSerializers.VARINT);
+     private AbstractAttributeMap attributeMap;
+     private final CombatTracker _combatTracker = new CombatTracker(this);
+-    private final Map<Potion, PotionEffect> activePotionsMap = Maps.<Potion, PotionEffect>newHashMap();
++    public final Map<Potion, PotionEffect> activePotionsMap = Maps.<Potion, PotionEffect>newHashMap();
+     private final ItemStack[] handInventory = new ItemStack[2];
+     private final ItemStack[] armorArray = new ItemStack[4];
+     public boolean isSwingInProgress;
+++++ END PATCH
+++++ REJECTED PATCH 7
+     private BlockPos prevBlockpos;
+     private DamageSource field_189750_bF;
+     private long field_189751_bG;
++    // CraftBukkit start
++    public int expToDrop;
++    public int maxAirTicks = 300;
++    boolean forceDrops;
++    ArrayList<org.bukkit.inventory.ItemStack> drops = new ArrayList<org.bukkit.inventory.ItemStack>();
++    public org.bukkit.craftbukkit.attribute.CraftAttributeMap craftAttributes;
++    public boolean collides = true;
++    // CraftBukkit end
+ 
+     public void onKillCommand()
+     {
+++++ END PATCH
+++++ REJECTED PATCH 9
+             {
+                 double d0 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
+                 int i = (int)(150.0D * d0);
+-                if (!state.getBlock().addLandingEffects(state, (WorldServer)this.worldObj, pos, state, this, i))
+-                ((WorldServer)this.worldObj).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
++                // CraftBukkit start - visiblity api
++                if (!state.getBlock().addLandingEffects(state, (WorldServer)this.worldObj, pos, state, this, i)) {
++                	if (this instanceof EntityPlayerMP) {
++                        ((WorldServer)this.worldObj).sendParticles((EntityPlayerMP)this, EnumParticleTypes.BLOCK_DUST, false, this.posX, this.posY, this.posZ, i, 0.0, 0.0, 0.0, 0.15000000596046448, Block.getStateId(state));
++                    }
++                    else {
++                        ((WorldServer)this.worldObj).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0, 0.0, 0.0, 0.15000000596046448, Block.getStateId(state));
++                    }
++                //((WorldServer)this.worldObj).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, i, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {Block.getStateId(state)});
++                }
++                // CB end
+             }
+         }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 10
+         this.prevRotationYaw = this.rotationYaw;
+         this.prevRotationPitch = this.rotationPitch;
+         this.worldObj.theProfiler.endSection();
++    } // CB
++    public int getExpReward() {
++        final int exp = this.getExperiencePoints(this.attackingPlayer);
++        if (!this.worldObj.isRemote && (this.recentlyHit > 0 || this.isPlayer()) && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot")) {
++            return exp;
++        }
++        return 0;
+     }
+ 
+     protected void frostWalk(BlockPos pos)
+++++ END PATCH
+++++ REJECTED PATCH 11
+     {
+         ++this.deathTime;
+ 
+-        if (this.deathTime == 20)
++        if (this.deathTime >= 20 && !this.isDead) // CB
+         {
+-            if (!this.worldObj.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot")))
+-            {
+-                int i = this.getExperiencePoints(this.attackingPlayer);
+-                i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
+-                while (i > 0)
+-                {
+-                    int j = EntityXPOrb.getXPSplit(i);
+-                    i -= j;
+-                    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+-                }
++            //if (!this.worldObj.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot")))
++            //{
++            //    int i = this.getExperiencePoints(this.attackingPlayer);
++        	// CraftBukkit start - Update getExpReward() above if the removed if() changes!
++        	int i = this.expToDrop;
++        	while (i > 0) {
++        		final int j = EntityXPOrb.getXPSplit(i);
++                i -= j;
++                this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
++        		//int j = EntityExperienceOrb.getOrbValue(i);
++                //i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
++                //while (i > 0)
++                //{
++                //    int j = EntityXPOrb.getXPSplit(i);
++                //    i -= j;
++                //    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
++                //}
+             }
+-
++        	this.expToDrop = 0;
+             this.setDead();
+-
+-            for (int k = 0; k < 20; ++k)
+-            {
+-                double d2 = this.rand.nextGaussian() * 0.02D;
+-                double d0 = this.rand.nextGaussian() * 0.02D;
+-                double d1 = this.rand.nextGaussian() * 0.02D;
+-                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1, new int[0]);
++            for (i = 0; i < 20; ++i) {
++                final double d0 = this.rand.nextGaussian() * 0.02;
++                final double d2 = this.rand.nextGaussian() * 0.02;
++                final double d3 = this.rand.nextGaussian() * 0.02;
++                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + this.rand.nextFloat() * this.width * 2.0f - this.width, this.posY + this.rand.nextFloat() * this.height, this.posZ + this.rand.nextFloat() * this.width * 2.0f - this.width, d0, d2, d3, new int[0]);
+             }
+         }
+     }
+++++ END PATCH
+++++ REJECTED PATCH 13
+             this.setFlag(7, true);
+         }
+     }
+-
++    // CraftBukkit start
++    private boolean isTickingEffects = false;
++    private List<Object> effectsToProcess = Lists.newArrayList();
++    // CraftBukkit end
+     protected void updatePotionEffects()
+     {
+         Iterator<Potion> iterator = this.activePotionsMap.keySet().iterator();
+-
++        isTickingEffects = true; // CraftBukkit
+         while (iterator.hasNext())
+         {
+             Potion potion = (Potion)iterator.next();
+++++ END PATCH
+++++ REJECTED PATCH 16
+     @Nullable
+     public PotionEffect removeActivePotionEffect(@Nullable Potion potioneffectin)
+     {
++    	// CB start
++    	if (this.isTickingEffects) {
++            this.effectsToProcess.add(potioneffectin);
++            return null;
++        }
++    	// CB end
+         return (PotionEffect)this.activePotionsMap.remove(potioneffectin);
+     }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 17
+ 
+     public void heal(float healAmount)
+     {
++    	this.heal(healAmount, EntityRegainHealthEvent.RegainReason.CUSTOM);
++    } // CB
++    public void heal(float healAmount, EntityRegainHealthEvent.RegainReason regainReason) {
+         healAmount = net.minecraftforge.event.ForgeEventFactory.onLivingHeal(this, healAmount);
+         if (healAmount <= 0) return;
+         float f = this.getHealth();
+ 
+         if (f > 0.0F)
+         {
+-            this.setHealth(f + healAmount);
++            //this.setHealth(f + healAmount);
++        	final EntityRegainHealthEvent event = new EntityRegainHealthEvent(this.getBukkitEntity(), healAmount, regainReason);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++            if (!event.isCancelled()) {
++                this.setHealth((float)(this.getHealth() + event.getAmount()));
++            }
+         }
+     }
+ 
+     public final float getHealth()
+     {
++    	// CB start
++    	if (this instanceof EntityPlayerMP) {
++            return (float)((EntityPlayerMP)this).getBukkitEntity().getHealth();
++        }
++    	// CB end
+         return ((Float)this.dataManager.get(HEALTH)).floatValue();
+     }
+ 
+     public void setHealth(float health)
+     {
++    	// CB start
++    	if (this instanceof EntityPlayerMP) {
++            final CraftPlayer player = ((EntityPlayerMP)this).getBukkitEntity();
++            if (health < 0.0f) {
++                player.setRealHealth(0.0);
++            }
++            else if (health > player.getMaxHealth()) {
++                player.setRealHealth(player.getMaxHealth());
++            }
++            else {
++                player.setRealHealth(health);
++            }
++            this.dataManager.set(EntityLivingBase.HEALTH, player.getScaledHealth());
++            return;
++        }
++    	// CB end
+         this.dataManager.set(HEALTH, Float.valueOf(MathHelper.clamp_float(health, 0.0F, this.getMaxHealth())));
+     }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 18
+             }
+             else
+             {
+-                if ((source == DamageSource.anvil || source == DamageSource.fallingBlock) && this.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null)
+-                {
+-                    this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).damageItem((int)(amount * 4.0F + this.rand.nextFloat() * amount * 2.0F), this);
+-                    amount *= 0.75F;
+-                }
++            	// CraftBukkit - Moved into damageEntity0(DamageSource, float)
++                //if ((source == DamageSource.anvil || source == DamageSource.fallingBlock) && this.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null)
++                //{
++                //    this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).damageItem((int)(amount * 4.0F + this.rand.nextFloat() * amount * 2.0F), this);
++                //    amount *= 0.75F;
++                //}
+ 
+-                boolean flag = false;
+-
+-                if (amount > 0.0F && this.canBlockDamageSource(source))
++                boolean flag = amount > 0.0F && this.canBlockDamageSource(source);//false;
++                // CraftBukkit - Moved into damageEntity0(DamageSource, float)
++                /*if (amount > 0.0F && this.canBlockDamageSource(source))
+                 {
+                     this.damageShield(amount);
+ 
+++++ END PATCH
+++++ REJECTED PATCH 22
+ 
+         if (i > 0)
+         {
++        	// CraftBukkit start
++        	if (!this.attackEntityFrom(DamageSource.fall, (float) i)) {
++        		return;
++        	}
++        	// CraftBukkit end
+             this.playSound(this.getFallSound(i), 1.0F, 1.0F);
+-            this.attackEntityFrom(DamageSource.fall, (float)i);
++            //this.attackEntityFrom(DamageSource.fall, (float)i);
+             int j = MathHelper.floor_double(this.posX);
+             int k = MathHelper.floor_double(this.posY - 0.20000000298023224D);
+             int l = MathHelper.floor_double(this.posZ);
+++++ END PATCH
+++++ REJECTED PATCH 24
+             return damage;
+         }
+         else
+-        {
+-            if (this.isPotionActive(MobEffects.RESISTANCE) && source != DamageSource.outOfWorld)
++        {   // CB start
++            /*if (this.isPotionActive(MobEffects.RESISTANCE) && source != DamageSource.outOfWorld)
+             {
+                 int i = (this.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
+                 int j = 25 - i;
+                 float f = damage * (float)j;
+                 damage = f / 25.0F;
+-            }
++            } */// CB end
+ 
+             if (damage <= 0.0F)
+             {
+++++ END PATCH
+++++ REJECTED PATCH 29
+ 
+     public boolean canBeCollidedWith()
+     {
+-        return !this.isDead;
++        return !this.isDead && this.collides; // CraftBukkit
+     }
+ 
+     public boolean canBePushed()
+     {
+-        return !this.isDead;
++        return !this.isDead && this.collides; // CraftBukkit
+     }
+ 
+     protected void setBeenAttacked()
+++++ END PATCH
+++++ REJECTED PATCH 30
+         if (this.activeItemStack != null && this.isHandActive())
+         {
+             this.updateItemUse(this.activeItemStack, 16);
+-            ItemStack itemstack = this.activeItemStack.onItemUseFinish(this.worldObj, this);
++            //ItemStack itemstack = this.activeItemStack.onItemUseFinish(this.worldObj, this);
++            // CraftBukkit start - fire PlayerItemConsumeEvent
++            final org.bukkit.inventory.ItemStack craftItem = CraftItemStack.asBukkitCopy(this.activeItemStack);
++            final PlayerItemConsumeEvent event = new PlayerItemConsumeEvent((Player)this.getBukkitEntity(), craftItem);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++            if (event.isCancelled()) {
++                if (this instanceof EntityPlayerMP) {
++                    ((EntityPlayerMP)this).getBukkitEntity().updateInventory();
++                    ((EntityPlayerMP)this).getBukkitEntity().updateScaledHealth();
++                }
++                return;
++            }
++            ItemStack itemstack = craftItem.equals(event.getItem()) ? this.activeItemStack.onItemUseFinish(this.worldObj, this) : CraftItemStack.asNMSCopy(event.getItem()).onItemUseFinish(this.worldObj, this);
++            // CraftBukkit end
+ 
+             itemstack = net.minecraftforge.event.ForgeEventFactory.onItemUseFinish(this, activeItemStack, getItemInUseCount(), itemstack);
+ 
+++++ END PATCH

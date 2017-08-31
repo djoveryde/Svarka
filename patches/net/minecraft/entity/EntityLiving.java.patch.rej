@@ -1,0 +1,65 @@
+++++ REJECTED PATCH 4
+     protected EntityJumpHelper jumpHelper;
+     private final EntityBodyHelper bodyHelper;
+     protected PathNavigate navigator;
+-    public final EntityAITasks tasks;
+-    public final EntityAITasks targetTasks;
++    public EntityAITasks tasks;
++    public EntityAITasks targetTasks;
+     private EntityLivingBase attackTarget;
+     private final EntitySenses senses;
+     private final ItemStack[] inventoryHands = new ItemStack[2];
+-    protected float[] inventoryHandsDropChances = new float[2];
++    public float[] inventoryHandsDropChances = new float[2];
+     private final ItemStack[] inventoryArmor = new ItemStack[4];
+-    protected float[] inventoryArmorDropChances = new float[4];
+-    private boolean canPickUpLoot;
+-    private boolean persistenceRequired;
++    public float[] inventoryArmorDropChances = new float[4];
++    public boolean canPickUpLoot;
++    public boolean persistenceRequired;
+     private final Map<PathNodeType, Float> mapPathPriority = Maps.newEnumMap(PathNodeType.class);
+     private ResourceLocation deathLootTable;
+     private long deathLootTableSeed;
+++++ END PATCH
+++++ REJECTED PATCH 9
+                 double d2 = entity.posZ - this.posZ;
+                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+ 
+-                if (this.canDespawn() && d3 > 16384.0D)
++                if (/*this.canDespawn() && */d3 > 16384.0D)
+                 {
+                     this.setDead();
+                 }
+ 
+-                if (this.entityAge > 600 && this.rand.nextInt(800) == 0 && d3 > 1024.0D && this.canDespawn())
++                if (this.entityAge > 600 && this.rand.nextInt(800) == 0 && d3 > 1024.0D/* && this.canDespawn()*/)
+                 {
+                     this.setDead();
+                 }
+++++ END PATCH
+++++ REJECTED PATCH 10
+     {
+         if (this.getLeashed() && this.getLeashedToEntity() == player)
+         {
++        	// CraftBukkit start - fire PlayerUnleashEntityEvent
++        	if (CraftEventFactory.callPlayerUnleashEntityEvent(this, player).isCancelled()) {
++        		((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityAttach(this, this.getLeashedToEntity()));
++        		return false;
++        	}
++        	// CraftBukkit end
+             this.clearLeashed(true, !player.capabilities.isCreativeMode);
+             return true;
+         }
+         else if (stack != null && stack.getItem() == Items.LEAD && this.canBeLeashedTo(player))
+         {
++        	// CraftBukkit start - fire PlayerLeashEntityEvent
++        	if (CraftEventFactory.callPlayerLeashEntityEvent(this, player, player).isCancelled()) {
++        		((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityAttach(this, this.getLeashedToEntity()));
++        		return false;
++        	}
++        	// CraftBukkit end
+             this.setLeashedToEntity(player, true);
+             --stack.stackSize;
+             return true;
+++++ END PATCH

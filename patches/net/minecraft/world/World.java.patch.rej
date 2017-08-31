@@ -1,0 +1,320 @@
+++++ REJECTED PATCH 1
+ import com.google.common.base.Objects;
+ import com.google.common.base.Predicate;
+ import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++
++import java.util.ArrayList;
+ import java.util.Calendar;
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.List;
++import java.util.Map;
+ import java.util.Random;
+ import java.util.UUID;
+ import javax.annotation.Nullable;
++
++import org.bukkit.Bukkit;
++import org.bukkit.block.BlockState;
++import org.bukkit.craftbukkit.CraftServer;
++import org.bukkit.craftbukkit.CraftWorld;
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.craftbukkit.util.CraftMagicNumbers;
++import org.bukkit.event.block.BlockCanBuildEvent;
++import org.bukkit.event.block.BlockPhysicsEvent;
++import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
++import org.bukkit.generator.ChunkGenerator;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockLiquid;
+ import net.minecraft.block.material.Material;
+++++ END PATCH
+++++ REJECTED PATCH 5
+     public float thunderingStrength;
+     private int lastLightningBolt;
+     public final Random rand = new Random();
+-    public final WorldProvider provider;
++    public WorldProvider provider;
+     protected PathWorldListener pathListener = new PathWorldListener();
+     protected List<IWorldEventListener> eventListeners;
+     protected IChunkProvider chunkProvider;
+     protected final ISaveHandler saveHandler;
+-    protected WorldInfo worldInfo;
++    public WorldInfo worldInfo;
+     protected boolean findingSpawnPoint;
+-    protected MapStorage mapStorage;
++    public MapStorage mapStorage;
+     public VillageCollection villageCollectionObj;
+     protected LootTableManager lootTable;
+     public final Profiler theProfiler;
+     private final Calendar theCalendar;
+-    protected Scoreboard worldScoreboard;
++    public Scoreboard worldScoreboard;
+     public final boolean isRemote;
+-    protected boolean spawnHostileMobs;
+-    protected boolean spawnPeacefulMobs;
++    public boolean spawnHostileMobs;
++    public boolean spawnPeacefulMobs;
+     private boolean processingLoadedTiles;
+     private final WorldBorder worldBorder;
+     int[] lightUpdateBlockList;
+++++ END PATCH
+++++ REJECTED PATCH 6
+     public java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot> capturedBlockSnapshots = new java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot>();
+     private net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities;
+     private net.minecraftforge.common.util.WorldCapabilityData capabilityData;
++    
++    // CraftBukkit start Added the following
++    private final CraftWorld world;
++    public boolean pvpMode;
++    public boolean keepSpawnInMemory = true;
++    public ChunkGenerator generator;
++        
++    public boolean captureBlockStates = false;
++    public boolean captureTreeGeneration = false;
++        
++    public ArrayList<BlockState> capturedBlockStates = new ArrayList<BlockState>(){
++    	@Override
++    	public boolean add(BlockState blockState ) {
++    		Iterator<BlockState> blockStateIterator = this.iterator();
++    		while( blockStateIterator.hasNext() ) {
++    			BlockState blockState1 = blockStateIterator.next();
++    			if ( blockState1.getLocation().equals( blockState.getLocation() ) ) {
++    				return false;
++    			}
++    		}
++        	
++    		return super.add( blockState );
++    	}
++    };
++    public long ticksPerAnimalSpawns;
++    public long ticksPerMonsterSpawns;
++    public boolean populating;
++    private int tickPosition;
++        
++    public CraftWorld getWorld() {
++    	return this.world;
++    }
++        
++    public CraftServer getServer() {
++    	return (CraftServer) Bukkit.getServer();
++    }
++        
++    public Chunk getChunkIfLoaded(int x, int z) {
++    	return ((net.minecraft.world.gen.ChunkProviderServer) this.chunkProvider).getLoadedChunk(x, z);
++    }
+ 
+-    protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client)
+-    {
+-        this.eventListeners = Lists.newArrayList(new IWorldEventListener[] {this.pathListener});
++    //protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client)
++    //{
++    //   this.eventListeners = Lists.newArrayList(new IWorldEventListener[] {this.pathListener});
++    protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client, ChunkGenerator gen, org.bukkit.World.Environment env) {
++    	this.generator = gen;
++    	this.world = new CraftWorld((WorldServer) this, gen, env);
++    	this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
++    	this.ticksPerMonsterSpawns = this.getServer().getTicksPerMonsterSpawns(); // CraftBukkit
++    	// CB end
++    	this.eventListeners = Lists.newArrayList(new IWorldEventListener[] {this.pathListener});
+         this.theCalendar = Calendar.getInstance();
+         this.worldScoreboard = new Scoreboard();
+         this.spawnHostileMobs = true;
+++++ END PATCH
+++++ REJECTED PATCH 11
+     {
+         if (this.worldInfo.getTerrainType() != WorldType.DEBUG_WORLD)
+         {
++        	// CraftBukkit start
++        	if (populating) {
++        		return;
++        	}
++        	// CraftBukkit end
+             this.notifyNeighborsOfStateChange(pos, blockType);
+         }
+     }
+++++ END PATCH
+++++ REJECTED PATCH 12
+ 
+             try
+             {
++            	// CraftBukkit start
++            	CraftWorld world = ((WorldServer) this).getWorld();
++            	if (world != null) {
++            		BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()), CraftMagicNumbers.getId(blockIn));
++            		this.getServer().getPluginManager().callEvent(event);
++            		
++            		if (event.isCancelled()) {
++            			return;
++            		}
++            	}
++            	// CraftBukkit end
+                 iblockstate.neighborChanged(this, pos, blockIn);
+             }
+             catch (Throwable throwable)
+++++ END PATCH
+++++ REJECTED PATCH 14
+         this.weatherEffects.add(entityIn);
+         return true;
+     }
+-
+-    public boolean spawnEntityInWorld(Entity entityIn)
++    public boolean spawnEntityInWorld(Entity entityIn) {
++    	return addEntity(entityIn, SpawnReason.DEFAULT);
++    }
++    public boolean addEntity(Entity entityIn, SpawnReason reason)
+     {
+         // do not drop any items while restoring blocksnapshots. Prevents dupes
+         if (!this.isRemote && (entityIn == null || (entityIn instanceof net.minecraft.entity.item.EntityItem && this.restoringBlockSnapshots))) return false;
+++++ END PATCH
+++++ REJECTED PATCH 19
+         for (int i = 0; i < this.weatherEffects.size(); ++i)
+         {
+             Entity entity = (Entity)this.weatherEffects.get(i);
+-
++            // CraftBukkit start - Fixed an NPE
++            if (entity == null) {
++            	continue;
++            }
++            // CraftBukkit end
+             try
+             {
+                 ++entity.ticksExisted;
+++++ END PATCH
+++++ REJECTED PATCH 21
+         this.tickPlayers();
+         this.theProfiler.endStartSection("regular");
+ 
+-        for (int i1 = 0; i1 < this.loadedEntityList.size(); ++i1)
+-        {
+-            Entity entity2 = (Entity)this.loadedEntityList.get(i1);
++        //for (int i1 = 0; i1 < this.loadedEntityList.size(); ++i1)
++        //{
++        // CraftBukkit start - Use field for loop variable
++        for (this.tickPosition = 0; this.tickPosition < this.loadedEntityList.size(); ++this.tickPosition) {
++        	Entity entity2 = (Entity) this.loadedEntityList.get(this.tickPosition);
++        	// CraftBukkit end
++            //Entity entity2 = (Entity)this.loadedEntityList.get(i1);
+             Entity entity3 = entity2.getRidingEntity();
+ 
+             if (entity3 != null)
+++++ END PATCH
+++++ REJECTED PATCH 28
+     {
+         int i = MathHelper.floor_double(entityIn.posX);
+         int j = MathHelper.floor_double(entityIn.posZ);
+-        boolean isForced = getPersistentChunks().containsKey(new net.minecraft.util.math.ChunkPos(i >> 4, j >> 4));
+-        int k = isForced ? 0 : 32;
+-        boolean canUpdate = !forceUpdate || this.isAreaLoaded(i - k, 0, j - k, i + k, 0, j + k, true);
++        //boolean isForced = getPersistentChunks().containsKey(new net.minecraft.util.math.ChunkPos(i >> 4, j >> 4));
++        //int k = isForced ? 0 : 32;
++        // CraftBukkit start - Use neighbor cache instead of looking up
++        Chunk startingChunk = this.getChunkIfLoaded(i >> 4, j >> 4);
++        boolean canUpdate = startingChunk != null && (!forceUpdate || startingChunk.areNeighborsLoaded(2))/*this.isAreaLoaded(i - k, 0, j - k, i + k, 0, j + k, true)*/;
+         if (!canUpdate) canUpdate = net.minecraftforge.event.ForgeEventFactory.canEntityUpdate(entityIn);
+ 
+         if (canUpdate)
+++++ END PATCH
+++++ REJECTED PATCH 30
+         }
+         else
+         {
++        	// CraftBukkit start
++        	if (capturedTileEntities.containsKey(pos)) {
++        		return capturedTileEntities.get(pos);
++        	}
++        	// CraftBukkit end
+             TileEntity tileentity = null;
+ 
+             if (this.processingLoadedTiles)
+++++ END PATCH
+++++ REJECTED PATCH 32
+                 }
+ 
+                 this.rainingStrength = MathHelper.clamp_float(this.rainingStrength, 0.0F, 1.0F);
++                // CraftBukkit start
++                for (int idx = 0; idx < this.playerEntities.size(); ++idx) {
++                	if (((EntityPlayerMP) this.playerEntities.get(idx)).worldObj == this) {
++                		((EntityPlayerMP) this.playerEntities.get(idx)).tickWeather();
++                	}
++                }
++                // CraftBukkit end
+             }
+         }
+     }
+++++ END PATCH
+++++ REJECTED PATCH 34
+         int i = 0;
+ 
+         for (Entity entity : this.loadedEntityList)
+-        {
+-            if ((!(entity instanceof EntityLiving) || !((EntityLiving)entity).isNoDespawnRequired()) && entityType.isAssignableFrom(entity.getClass()))
+-            {
+-                ++i;
++        {   // CB start
++            //if ((!(entity instanceof EntityLiving) || !((EntityLiving)entity).isNoDespawnRequired()) && entityType.isAssignableFrom(entity.getClass()))
++            //{
++            //    ++i;
++            //}
++        	if (entity instanceof EntityLiving) {
++                final EntityLiving entityinsentient = (EntityLiving)entity;
++                if (entityinsentient.canDespawn() && entityinsentient.isNoDespawnRequired()) {
++                    continue;
++                }
+             }
++            if (entityType.isAssignableFrom(entity.getClass())) {
++                ++i;
++            } // CB end
+         }
+ 
+         return i;
+++++ END PATCH
+++++ REJECTED PATCH 35
+     {
+         for (Entity entity : entityCollection)
+         {
++        	// CB start
++        	if(entity == null) {
++        		continue;
++        	}
++        	// CB end
+             if (!net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.EntityJoinWorldEvent(entity, this)))
+             {
+                 loadedEntityList.add(entity);
+++++ END PATCH
+++++ REJECTED PATCH 36
+     }
+ 
+     public boolean canBlockBePlaced(Block blockIn, BlockPos pos, boolean p_175716_3_, EnumFacing side, @Nullable Entity entityIn, @Nullable ItemStack itemStackIn)
+-    {
+-        IBlockState iblockstate = this.getBlockState(pos);
+-        AxisAlignedBB axisalignedbb = p_175716_3_ ? null : blockIn.getDefaultState().getCollisionBoundingBox(this, pos);
+-        return axisalignedbb != Block.NULL_AABB && !this.checkNoEntityCollision(axisalignedbb.offset(pos), entityIn) ? false : (iblockstate.getMaterial() == Material.CIRCUITS && blockIn == Blocks.ANVIL ? true : iblockstate.getBlock().isReplaceable(this, pos) && blockIn.canReplace(this, pos, side, itemStackIn));
++    {   // CB start
++    	final IBlockState iblockdata = this.getBlockState(pos);
++        final AxisAlignedBB axisalignedbb = p_175716_3_ ? null : blockIn.getDefaultState().getCollisionBoundingBox(this, pos);
++        final boolean defaultReturn = (axisalignedbb == Block.NULL_AABB || this.checkNoEntityCollision(axisalignedbb.offset(pos), entityIn)) && ((iblockdata.getMaterial() == Material.CIRCUITS && blockIn == Blocks.ANVIL) || (iblockdata.getMaterial().isReplaceable() && blockIn.canReplace(this, pos, side, itemStackIn)));
++        final BlockCanBuildEvent event = new BlockCanBuildEvent(this.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()), CraftMagicNumbers.getId(blockIn), defaultReturn);
++        this.getServer().getPluginManager().callEvent(event);
++        return event.isBuildable();
++        //IBlockState iblockstate = this.getBlockState(pos);
++        //AxisAlignedBB axisalignedbb = p_175716_3_ ? null : blockIn.getDefaultState().getCollisionBoundingBox(this, pos);
++        //return axisalignedbb != Block.NULL_AABB && !this.checkNoEntityCollision(axisalignedbb.offset(pos), entityIn) ? false : (iblockstate.getMaterial() == Material.CIRCUITS && blockIn == Blocks.ANVIL ? true : iblockstate.getBlock().isReplaceable(this, pos) && blockIn.canReplace(this, pos, side, itemStackIn));
++        // CB end
+     }
+ 
+     public int getSeaLevel()
+++++ END PATCH
+++++ REJECTED PATCH 37
+         for (int i = 0; i < this.playerEntities.size(); ++i)
+         {
+             EntityPlayer entityplayer1 = (EntityPlayer)this.playerEntities.get(i);
++            // CraftBukkit start - Fixed an NPE
++            if (entityplayer1 == null || entityplayer1.isDead) {
++            	continue;
++            }
++            // CraftBukkit end
+ 
+             if ((EntitySelectors.CAN_AI_TARGET.apply(entityplayer1) || !spectator) && (EntitySelectors.NOT_SPECTATING.apply(entityplayer1) || spectator))
+             {
+++++ END PATCH

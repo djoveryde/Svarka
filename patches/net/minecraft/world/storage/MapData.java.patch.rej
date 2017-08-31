@@ -1,0 +1,39 @@
+++++ REJECTED PATCH 1
+ import net.minecraft.util.math.Vec4b;
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldSavedData;
++import org.bukkit.craftbukkit.map.CraftMapView;
+ 
++//CraftBukkit start
++import java.util.UUID;
++
++import org.bukkit.craftbukkit.CraftServer;
++import org.bukkit.craftbukkit.CraftWorld;
++import org.bukkit.craftbukkit.map.CraftMapView;
++// CraftBukkit end
++
+ public class MapData extends WorldSavedData
+ {
+     public int xCenter;
+++++ END PATCH
+++++ REJECTED PATCH 2
+     public List<MapData.MapInfo> playersArrayList = Lists.<MapData.MapInfo>newArrayList();
+     private final Map<EntityPlayer, MapData.MapInfo> playersHashMap = Maps.<EntityPlayer, MapData.MapInfo>newHashMap();
+     public Map<String, Vec4b> mapDecorations = Maps.<String, Vec4b>newLinkedHashMap();
++    // CraftBukkit start
++    public final CraftMapView mapView;
++    //private CraftServer server;
++    //private UUID uniqueId = null;
++    // CraftBukkit end
+ 
+     public MapData(String mapname)
+     {
+         super(mapname);
++        // CraftBukkit start
++        mapView = new CraftMapView(this);
++        //server = (CraftServer) org.bukkit.Bukkit.getServer();
++        // CraftBukkit end
+     }
+ 
+     public void calculateMapCenter(double x, double z, int mapScale)
+++++ END PATCH

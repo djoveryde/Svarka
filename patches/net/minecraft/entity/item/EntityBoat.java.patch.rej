@@ -1,0 +1,17 @@
+++++ REJECTED PATCH 5
+ 
+                 if (flag || this.getDamageTaken() > 40.0F)
+                 {
++                	// CraftBukkit start
++                	VehicleDestroyEvent destroyEvent = new VehicleDestroyEvent(vehicle, attacker);
++                	this.worldObj.getServer().getPluginManager().callEvent(destroyEvent);
++                		
++                	if (destroyEvent.isCancelled()) {
++                		this.setDamageTaken(40F); // Maximize damage so this doesn't get triggered again right away
++                		return true;
++                	}
++                	// CraftBukkit end
+                     if (!flag && this.worldObj.getGameRules().getBoolean("doEntityDrops"))
+                     {
+                         this.dropItemWithOffset(this.getItemBoat(), 1, 0.0F);
+++++ END PATCH

@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ 
+     public DemoWorldServer(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo worldInfoIn, int dimensionId, Profiler profilerIn)
+     {
+-        super(server, saveHandlerIn, worldInfoIn, dimensionId, profilerIn);
++        super(server, saveHandlerIn, worldInfoIn, dimensionId, profilerIn, null, null);
+         this.worldInfo.populateFromWorldSettings(DEMO_WORLD_SETTINGS);
+     }
+ }
+++++ END PATCH

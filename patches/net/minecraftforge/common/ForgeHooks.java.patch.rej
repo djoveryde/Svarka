@@ -1,0 +1,50 @@
+++++ REJECTED PATCH 1
+                     return;
+                 }
+ 
+-                itemstack = block.func_185473_a(this.theWorld, blockpos, iblockstate);
++                itemstack = block.getItem(this.theWorld, blockpos, iblockstate);
+ 
+                 if (itemstack == null)
+                 {
+++++ END PATCH
+++++ REJECTED PATCH 2
+                     EntityMinecart entityminecart = (EntityMinecart)this.objectMouseOver.entityHit;
+                     Item item;
+ 
+-                    switch (entityminecart.func_184264_v())
++                    switch (entityminecart.getType())
+                     {
+                         case FURNACE:
+                             item = Items.furnace_minecart;
+++++ END PATCH
+++++ REJECTED PATCH 3
+                 }
+                 else if (this.objectMouseOver.entityHit instanceof EntityBoat)
+                 {
+-                    itemstack = new ItemStack(((EntityBoat)this.objectMouseOver.entityHit).func_184455_j());
++                    itemstack = new ItemStack(((EntityBoat)this.objectMouseOver.entityHit).getItemBoat());
+                 }
+                 else if (this.objectMouseOver.entityHit instanceof EntityArmorStand)
+                 {
+++++ END PATCH
+++++ REJECTED PATCH 4
+                 }
+                 else if (this.objectMouseOver.entityHit instanceof EntityEnderCrystal)
+                 {
+-                    itemstack = new ItemStack(Items.field_185158_cP);
++                    itemstack = new ItemStack(Items.END_CRYSTAL);
+                 }
+                 else
+                 {
+++++ END PATCH
+++++ REJECTED PATCH 5
+                     }
+ 
+                     itemstack = new ItemStack(Items.spawn_egg);
+-                    ItemMonsterPlacer.func_185078_a(itemstack, s);
++                    ItemMonsterPlacer.applyEntityIdToItemStack(itemstack, s);
+                 }
+             }
+          */
+++++ END PATCH

@@ -1,0 +1,18 @@
+++++ REJECTED PATCH 3
+             this.loginGameProfile = this.getOfflineProfile(this.loginGameProfile);
+         }
+ 
+-        String s = this.server.getPlayerList().allowUserToConnect(this.networkManager.getRemoteAddress(), this.loginGameProfile);
++        //String s = this.server.getPlayerList().allowUserToConnect(this.networkManager.getRemoteAddress(), this.loginGameProfile);
++        // CraftBukkit start - fire PlayerLoginEvent
++        EntityPlayerMP s = this.server.getPlayerList().allowUserToConnect(this, this.loginGameProfile, hostname);
+ 
+-        if (s != null)
++        if (s == null)
+         {
+-            this.closeConnection(s);
++            //this.closeConnection(s);
+         }
+         else
+         {
+++++ END PATCH

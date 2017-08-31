@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+     public int fallTime;
+     public boolean shouldDropItem = true;
+     private boolean canSetAsBlock;
+-    private boolean hurtEntities;
++    public boolean hurtEntities;
+     private int fallHurtMax = 40;
+     private float fallHurtAmount = 2.0F;
+     public NBTTagCompound tileEntityData;
+++++ END PATCH

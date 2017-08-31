@@ -1,0 +1,31 @@
+++++ REJECTED PATCH 1
+ package net.minecraft.entity.projectile;
+ 
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+++++ END PATCH
+++++ REJECTED PATCH 5
+ 
+             if (source.getEntity() != null)
+             {
++            	// CraftBukkit start
++            	if (CraftEventFactory.handleNonLivingEntityDamageEvent(this, source, amount)) {
++            		return false;
++            	}
++            	// CraftBukkit end
+                 Vec3d vec3d = source.getEntity().getLookVec();
+ 
+                 if (vec3d != null)
+++++ END PATCH
+++++ REJECTED PATCH 6
+                 if (source.getEntity() instanceof EntityLivingBase)
+                 {
+                     this.shootingEntity = (EntityLivingBase)source.getEntity();
++                    this.projectileSource = (org.bukkit.projectiles.ProjectileSource) this.shootingEntity.getBukkitEntity();
+                 }
+ 
+                 return true;
+++++ END PATCH

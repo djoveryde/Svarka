@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ 
+     public <T extends Enum<T>> T readEnumValue(Class<T> enumClass)
+     {
+-        return (T)((Enum[])enumClass.getEnumConstants())[this.readVarIntFromBuffer()];
++        return (T)(enumClass.getEnumConstants())[this.readVarIntFromBuffer()];
+     }
+ 
+     public PacketBuffer writeEnumValue(Enum<?> value)
+++++ END PATCH

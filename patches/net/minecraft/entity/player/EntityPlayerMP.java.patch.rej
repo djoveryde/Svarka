@@ -1,0 +1,33 @@
+++++ REJECTED PATCH 2
+     private float lastHealth = -1.0E8F;
+     private int lastFoodLevel = -99999999;
+     private boolean wasHungry = true;
+-    private int lastExperience = -99999999;
+-    private int respawnInvulnerabilityTicks = 60;
++    public int lastExperience = -99999999;
++    public int respawnInvulnerabilityTicks = 60;
+     private EntityPlayer.EnumChatVisibility chatVisibility;
+     private boolean chatColours = true;
+     private long playerLastActiveTime = System.currentTimeMillis();
+     private Entity spectatingEntity;
+-    private boolean invulnerableDimensionChange;
++    public boolean invulnerableDimensionChange;
+     public int currentWindowId;
+     public boolean isChangingQuantityOnly;
+     public int ping;
+     public boolean playerConqueredTheEnd;
++    // CraftBukkit start
++    public String displayName;
++    public ITextComponent listName;
++    public org.bukkit.Location compassTarget;
++    public int newExp = 0;
++    public int newLevel = 0;
++    public int newTotalExp = 0;
++    public boolean keepLevel = false;
++    public double maxHealthCache;
++    public boolean joining = true;
++    // CraftBukkit end
+ 
+     @SuppressWarnings("unused")
+     public EntityPlayerMP(MinecraftServer server, WorldServer worldIn, GameProfile profile, PlayerInteractionManager interactionManagerIn)
+++++ END PATCH
