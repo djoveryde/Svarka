@@ -36,11 +36,11 @@ version = '0.0.2'
 //}
 
 dependencies {
-	compile 'commons-lang:commons-lang:2.6'
+	compile 'org.apache.commons:commons-lang3:3.5'
 	compile 'org.avaje:ebean:2.8.1'
 	compile 'com.googlecode.json-simple:json-simple:1.1'
 	compile 'org.yaml:snakeyaml:1.15'
-	compile 'com.google.guava:guava:17.0'
+	compile 'com.google.guava:guava:21.0'
 }
 
 tasks.withType(JavaCompile) {
