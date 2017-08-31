@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+     }
+ 
+     @Nullable
++    @Deprecated
+     public ResourceLocation func_188021_a(ItemStack p_188021_1_, @Nullable World p_188021_2_, @Nullable EntityLivingBase p_188021_3_)
+     {
+         if (!this.field_188023_b.isEmpty())
+++++ END PATCH

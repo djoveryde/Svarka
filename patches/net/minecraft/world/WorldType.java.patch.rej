@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+ 
+     private WorldType(int p_i1960_1_, String p_i1960_2_, int p_i1960_3_)
+     {
++        if (p_i1960_2_.length() > 16 && field_180272_g != null) throw new IllegalArgumentException("World type names must not be longer then 16: " + p_i1960_2_);
+         this.field_77133_f = p_i1960_2_;
+         this.field_77134_g = p_i1960_3_;
+         this.field_77140_h = true;
+++++ END PATCH

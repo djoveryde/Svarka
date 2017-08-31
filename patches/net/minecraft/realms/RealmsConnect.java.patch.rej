@@ -1,0 +1,19 @@
+++++ REJECTED PATCH 1
+ 
+                 try
+                 {
++                    net.minecraftforge.fml.client.FMLClientHandler.instance().connectToRealmsServer(p_connect_1_, p_connect_2_);
+                     inetaddress = InetAddress.getByName(p_connect_1_);
+ 
+                     if (RealmsConnect.this.aborted)
+++++ END PATCH
+++++ REJECTED PATCH 2
+                         return;
+                     }
+ 
+-                    RealmsConnect.this.connection.func_179290_a(new C00Handshake(p_connect_1_, p_connect_2_, EnumConnectionState.LOGIN));
++                    RealmsConnect.this.connection.func_179290_a(new C00Handshake(p_connect_1_, p_connect_2_, EnumConnectionState.LOGIN, true));
+ 
+                     if (RealmsConnect.this.aborted)
+                     {
+++++ END PATCH

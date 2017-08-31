@@ -1,84 +1,42 @@
 --- ../src-base/minecraft/net/minecraft/item/crafting/ShapedRecipes.java
 +++ ../src-work/minecraft/net/minecraft/item/crafting/ShapedRecipes.java
-@@ -4,8 +4,17 @@
- import net.minecraft.inventory.InventoryCrafting;
- import net.minecraft.item.ItemStack;
+@@ -19,10 +19,8 @@
+ import net.minecraft.util.NonNullList;
+ import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.World;
-+import ru.svarka.crafting.ICBRecipe;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
  
 -public class ShapedRecipes implements IRecipe
-+import org.bukkit.craftbukkit.inventory.CraftItemStack;
-+import org.bukkit.craftbukkit.inventory.CraftShapedRecipe;
-+
-+//CraftBukkit start
-+import org.bukkit.craftbukkit.inventory.CraftItemStack;
-+import org.bukkit.craftbukkit.inventory.CraftShapedRecipe;
-+// CraftBukkit end
-+
-+public class ShapedRecipes implements ICBRecipe
++public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
  {
-     public final int recipeWidth;
-     public final int recipeHeight;
-@@ -20,7 +29,61 @@
-         this.recipeItems = p_i1917_3_;
-         this.recipeOutput = output;
+     public final int field_77576_b;
+     public final int field_77577_c;
+@@ -39,7 +37,6 @@
+         this.field_77575_e = p_i47501_5_;
      }
--
-+    // CraftBukkit start
-+    public org.bukkit.inventory.ShapedRecipe toBukkitRecipe() {
-+    	CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
-+    	CraftShapedRecipe recipe = new CraftShapedRecipe(result, this);
-+    	switch (this.recipeHeight) {
-+    	case 1:
-+    		switch (this.recipeWidth) {
-+    		case 1:
-+    			recipe.shape("a");
-+    			break;
-+    		case 2:
-+    			recipe.shape("ab");
-+    			break;
-+    		case 3:
-+    			recipe.shape("abc");
-+    			break;
-+    		}
-+    		break;
-+    	case 2:
-+    		switch (this.recipeWidth) {
-+    		case 1:
-+    			recipe.shape("a","b");
-+    			break;
-+    		case 2:
-+    			recipe.shape("ab","cd");
-+    			break;
-+    		case 3:
-+    			recipe.shape("abc","def");
-+    			break;
-+    		}
-+                break;
-+    	case 3:
-+    		switch (this.recipeWidth) {
-+    		case 1:
-+    			recipe.shape("a","b","c");
-+    			break;
-+    		case 2:
-+    			recipe.shape("ab","cd","ef");
-+    			break;
-+    		case 3:
-+    			recipe.shape("abc","def","ghi");
-+    			break;
-+    		}
-+    		break;
-+    	}
-+    	char c = 'a';
-+    	for (ItemStack stack : this.recipeItems) {
-+    		if (stack != null) {
-+    			recipe.setIngredient(c, org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(stack.getItem()), stack.getMetadata());
-+    		}
-+    		c++;
-+    	}
-+    	return recipe;
-+    }
-+    // CraftBukkit end
-     @Nullable
-     public ItemStack getRecipeOutput()
+ 
+-    @SideOnly(Side.CLIENT)
+     public String func_193358_e()
      {
+         return this.field_194137_e;
+@@ -58,10 +55,7 @@
+         {
+             ItemStack itemstack = p_179532_1_.func_70301_a(i);
+ 
+-            if (itemstack.func_77973_b().func_77634_r())
+-            {
+-                nonnulllist.set(i, new ItemStack(itemstack.func_77973_b().func_77668_q()));
+-            }
++            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+         }
+ 
+         return nonnulllist;
+@@ -72,7 +66,6 @@
+         return this.field_77574_d;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public boolean func_194133_a(int p_194133_1_, int p_194133_2_)
+     {
+         return p_194133_1_ >= this.field_77576_b && p_194133_2_ >= this.field_77577_c;

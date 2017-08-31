@@ -1,0 +1,15 @@
+++++ REJECTED PATCH 1
+ {
+     private static final Logger field_186465_b = LogManager.getLogger();
+     public static final LootTable field_186464_a = new LootTable(new LootPool[0]);
+-    private final LootPool[] field_186466_c;
++    private final List<LootPool> field_186466_c;
+ 
+     public LootTable(LootPool[] p_i46641_1_)
+     {
+-        this.field_186466_c = p_i46641_1_;
++        this.field_186466_c = Lists.newArrayList(p_i46641_1_);
+     }
+ 
+     public List<ItemStack> func_186462_a(Random p_186462_1_, LootContext p_186462_2_)
+++++ END PATCH

@@ -1,0 +1,17 @@
+++++ REJECTED PATCH 1
+         }
+     }
+ 
++    public static boolean testAllConditions(Iterable<LootCondition> conditions, Random rand, LootContext context)
++    {
++        if (conditions == null) return true;
++        for (LootCondition cond : conditions)
++           if (!cond.func_186618_a(rand, context))
++                return false;
++        return true;
++    }
++
+     public static boolean func_186638_a(@Nullable LootCondition[] p_186638_0_, Random p_186638_1_, LootContext p_186638_2_)
+     {
+         if (p_186638_0_ == null)
+++++ END PATCH

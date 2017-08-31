@@ -1,0 +1,57 @@
+++++ REJECTED PATCH 1
+     @Nullable
+     public TileEntity func_175625_s(BlockPos p_175625_1_)
+     {
+-        return this.func_190300_a(p_175625_1_, Chunk.EnumCreateEntityType.IMMEDIATE);
++        return this.func_190300_a(p_175625_1_, Chunk.EnumCreateEntityType.CHECK); // Forge: don't modify world from other threads
+     }
+ 
+     @Nullable
+++++ END PATCH
+++++ REJECTED PATCH 2
+     {
+         int i = (p_190300_1_.func_177958_n() >> 4) - this.field_72818_a;
+         int j = (p_190300_1_.func_177952_p() >> 4) - this.field_72816_b;
++        if (!withinBounds(i, j)) return null;
+         return this.field_72817_c[i][j].func_177424_a(p_190300_1_, p_190300_2_);
+     }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 3
+     {
+         int i = (p_180494_1_.func_177958_n() >> 4) - this.field_72818_a;
+         int j = (p_180494_1_.func_177952_p() >> 4) - this.field_72816_b;
++        if (!withinBounds(i, j)) return net.minecraft.init.Biomes.field_76772_c;
+         return this.field_72817_c[i][j].func_177411_a(p_180494_1_, this.field_72815_e.func_72959_q());
+     }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 4
+             {
+                 int i = (p_175629_2_.func_177958_n() >> 4) - this.field_72818_a;
+                 int j = (p_175629_2_.func_177952_p() >> 4) - this.field_72816_b;
++                if (!withinBounds(i, j)) return p_175629_1_.field_77198_c;
+                 return this.field_72817_c[i][j].func_177413_a(p_175629_1_, p_175629_2_);
+             }
+         }
+++++ END PATCH
+++++ REJECTED PATCH 5
+ 
+     public boolean func_175623_d(BlockPos p_175623_1_)
+     {
+-        return this.func_180495_p(p_175623_1_).func_185904_a() == Material.field_151579_a;
++        IBlockState state = this.func_180495_p(p_175623_1_);
++        return state.func_177230_c().isAir(state, this, p_175623_1_);
+     }
+ 
+     @SideOnly(Side.CLIENT)
+++++ END PATCH
+++++ REJECTED PATCH 6
+         {
+             int i = (p_175628_2_.func_177958_n() >> 4) - this.field_72818_a;
+             int j = (p_175628_2_.func_177952_p() >> 4) - this.field_72816_b;
++            if (!withinBounds(i, j)) return p_175628_1_.field_77198_c;
+             return this.field_72817_c[i][j].func_177413_a(p_175628_1_, p_175628_2_);
+         }
+         else
+++++ END PATCH

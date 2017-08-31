@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+             }
+             else
+             {
++                if(!net.minecraftforge.common.ForgeHooks.onThrowableImpact(this, raytraceresult))
+                 this.func_70184_a(raytraceresult);
+             }
+         }
+++++ END PATCH

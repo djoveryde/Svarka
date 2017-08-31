@@ -1,26 +1,10 @@
 ++++ REJECTED PATCH 1
-     private final BlockStateContainer data;
-     private NibbleArray blocklightArray;
-     private NibbleArray skylightArray;
--
-+    // CraftBukkit start
-+    public ExtendedBlockStorage(int y, boolean flag, char[] blockIds) {
-+    	this.yBase = y;
-+    	this.data = new BlockStateContainer();
-+    	for (int i = 0; i < blockIds.length; i++) {
-+    		int xx = i & 15;
-+    		int yy = (i >> 8) & 15;
-+    		int zz = (i >> 4) & 15;
-+    		this.data.set(xx, yy, zz, Block.BLOCK_STATE_IDS.getByValue(blockIds[i]));
-+    	}
-+    	this.blocklightArray = new NibbleArray();
-+    	if (flag) {
-+    		this.skylightArray = new NibbleArray();
-+    	}
-+    	removeInvalidBlocks();
-+    }
-+    // CraftBukkit end
-     public ExtendedBlockStorage(int y, boolean storeSkylight)
+ 
+     public void func_177484_a(int p_177484_1_, int p_177484_2_, int p_177484_3_, IBlockState p_177484_4_)
      {
-         this.yBase = y;
++        if (p_177484_4_ instanceof net.minecraftforge.common.property.IExtendedBlockState)
++            p_177484_4_ = ((net.minecraftforge.common.property.IExtendedBlockState) p_177484_4_).getClean();
+         IBlockState iblockstate = this.func_177485_a(p_177484_1_, p_177484_2_, p_177484_3_);
+         Block block = iblockstate.func_177230_c();
+         Block block1 = p_177484_4_.func_177230_c();
 ++++ END PATCH

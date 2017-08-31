@@ -1,0 +1,16 @@
+++++ REJECTED PATCH 1
+ 
+             if (!itemstack.func_190926_b())
+             {
+-                itemstack.func_77972_a(3, p_151367_1_);
++                damageArmor(itemstack, 3, p_151367_1_);
+             }
+         }
+         else if (!itemstack.func_190926_b())
+         {
+-            itemstack.func_77972_a(1, p_151367_1_);
++            damageArmor(itemstack, 1, p_151367_1_);
+         }
+     }
+ 
+++++ END PATCH

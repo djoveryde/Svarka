@@ -1,0 +1,20 @@
+++++ REJECTED PATCH 1
+ import net.minecraft.world.World;
+ import net.minecraft.world.storage.loot.LootTableList;
+ 
+-public class EntityMooshroom extends EntityCow
++public class EntityMooshroom extends EntityCow implements net.minecraftforge.common.IShearable
+ {
+     public EntityMooshroom(World p_i1687_1_)
+     {
+++++ END PATCH
+++++ REJECTED PATCH 2
+ 
+             return true;
+         }
+-        else if (itemstack.func_77973_b() == Items.field_151097_aZ && this.func_70874_b() >= 0)
++        else if (false && itemstack.func_77973_b() == Items.field_151097_aZ && this.func_70874_b() >= 0) //Forge Disable, Moved to onSheared
+         {
+             this.func_70106_y();
+             this.field_70170_p.func_175688_a(EnumParticleTypes.EXPLOSION_LARGE, this.field_70165_t, this.field_70163_u + (double)(this.field_70131_O / 2.0F), this.field_70161_v, 0.0D, 0.0D, 0.0D);
+++++ END PATCH

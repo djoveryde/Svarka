@@ -1,41 +1,44 @@
 ++++ REJECTED PATCH 1
- import net.minecraft.inventory.InventoryCrafting;
- import net.minecraft.item.ItemStack;
+ import net.minecraft.util.JsonUtils;
+ import net.minecraft.util.NonNullList;
  import net.minecraft.world.World;
-+import ru.svarka.crafting.ICBRecipe;
-+import org.bukkit.craftbukkit.inventory.CraftItemStack;
-+import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
  
 -public class ShapelessRecipes implements IRecipe
-+//CraftBukkit start
-+import org.bukkit.craftbukkit.inventory.CraftItemStack;
-+import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
-+// CraftBukkit end
-+
-+public class ShapelessRecipes implements ICBRecipe
++public class ShapelessRecipes extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
  {
-     private final ItemStack recipeOutput;
-     public final List<ItemStack> recipeItems;
+     private final ItemStack field_77580_a;
+     public final NonNullList<Ingredient> field_77579_b;
 ++++ END PATCH
 ++++ REJECTED PATCH 2
-         this.recipeOutput = output;
-         this.recipeItems = inputList;
+         this.field_77579_b = p_i47500_3_;
      }
--
-+    // CraftBukkit start
-+        @SuppressWarnings("unchecked")
-+        public org.bukkit.inventory.ShapelessRecipe toBukkitRecipe() {
-+            CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
-+            CraftShapelessRecipe recipe = new CraftShapelessRecipe(result, this);
-+            for (ItemStack stack : (List<ItemStack>) this.recipeItems) {
-+                if (stack != null) {
-+                    recipe.addIngredient(org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(stack.getItem()), stack.getMetadata());
-+                }
-+            }
-+            return recipe;
-+        }
-+        // CraftBukkit end
-     @Nullable
-     public ItemStack getRecipeOutput()
+ 
+-    @SideOnly(Side.CLIENT)
+     public String func_193358_e()
      {
+         return this.field_194138_c;
+++++ END PATCH
+++++ REJECTED PATCH 3
+         {
+             ItemStack itemstack = p_179532_1_.func_70301_a(i);
+ 
+-            if (itemstack.func_77973_b().func_77634_r())
+-            {
+-                nonnulllist.set(i, new ItemStack(itemstack.func_77973_b().func_77668_q()));
+-            }
++            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+         }
+ 
+         return nonnulllist;
+++++ END PATCH
+++++ REJECTED PATCH 4
+         return nonnulllist;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public boolean func_194133_a(int p_194133_1_, int p_194133_2_)
+     {
+         return p_194133_1_ * p_194133_2_ >= this.field_77579_b.size();
 ++++ END PATCH

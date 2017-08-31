@@ -1,18 +1,30 @@
+++++ REJECTED PATCH 1
+             if (entityplayermp == null)
+             {
+                 this.field_147328_g = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;
+-                this.field_147327_f.func_184103_al().func_72355_a(this.field_147333_a, this.field_181025_l);
++                net.minecraftforge.fml.common.network.internal.FMLNetworkHandler.fmlServerHandshake(this.field_147327_f.func_184103_al(), this.field_147333_a, this.field_181025_l);
+                 this.field_181025_l = null;
+             }
+         }
+++++ END PATCH
+++++ REJECTED PATCH 2
+             }
+             else
+             {
+-                this.field_147327_f.func_184103_al().func_72355_a(this.field_147333_a, this.field_147327_f.func_184103_al().func_148545_a(this.field_147337_i));
++                net.minecraftforge.fml.common.network.internal.FMLNetworkHandler.fmlServerHandshake(this.field_147327_f.func_184103_al(), this.field_147333_a, this.field_147327_f.func_184103_al().func_148545_a(this.field_147337_i));
+             }
+         }
+     }
+++++ END PATCH
 ++++ REJECTED PATCH 3
-             this.loginGameProfile = this.getOfflineProfile(this.loginGameProfile);
-         }
- 
--        String s = this.server.getPlayerList().allowUserToConnect(this.networkManager.getRemoteAddress(), this.loginGameProfile);
-+        //String s = this.server.getPlayerList().allowUserToConnect(this.networkManager.getRemoteAddress(), this.loginGameProfile);
-+        // CraftBukkit start - fire PlayerLoginEvent
-+        EntityPlayerMP s = this.server.getPlayerList().allowUserToConnect(this, this.loginGameProfile, hostname);
- 
--        if (s != null)
-+        if (s == null)
-         {
--            this.closeConnection(s);
-+            //this.closeConnection(s);
-         }
-         else
-         {
+             this.field_147335_k = p_147315_1_.func_149300_a(privatekey);
+             this.field_147328_g = NetHandlerLoginServer.LoginState.AUTHENTICATING;
+             this.field_147333_a.func_150727_a(this.field_147335_k);
+-            (new Thread("User Authenticator #" + field_147331_b.incrementAndGet())
++            (new Thread(net.minecraftforge.fml.common.thread.SidedThreadGroups.SERVER, "User Authenticator #" + field_147331_b.incrementAndGet())
+             {
+                 public void run()
+                 {
 ++++ END PATCH

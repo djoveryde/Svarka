@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+         this.field_135037_b = p_i1303_2_;
+         this.field_135038_c = p_i1303_3_;
+         this.field_135036_d = p_i1303_4_;
++        this.javaLocale = new java.util.Locale(field_135039_a, field_135037_b);
+     }
+ 
+     public String func_135034_a()
+++++ END PATCH

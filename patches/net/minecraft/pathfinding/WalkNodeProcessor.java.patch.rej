@@ -1,0 +1,11 @@
+++++ REJECTED PATCH 2
+         Block block = iblockstate.func_177230_c();
+         Material material = iblockstate.func_185904_a();
+ 
++        PathNodeType type = block.getAiPathNodeType(iblockstate, p_189553_1_, blockpos);
++        if (type != null) return type;
++
+         if (material == Material.field_151579_a)
+         {
+             return PathNodeType.OPEN;
+++++ END PATCH

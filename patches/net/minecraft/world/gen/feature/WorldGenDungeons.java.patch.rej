@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+ 
+     private ResourceLocation func_76543_b(Random p_76543_1_)
+     {
+-        return field_175916_b[p_76543_1_.nextInt(field_175916_b.length)];
++        return net.minecraftforge.common.DungeonHooks.getRandomDungeonMob(p_76543_1_);
+     }
+ }
+++++ END PATCH

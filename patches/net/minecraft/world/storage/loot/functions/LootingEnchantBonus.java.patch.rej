@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ 
+         if (entity instanceof EntityLivingBase)
+         {
+-            int i = EnchantmentHelper.func_185283_h((EntityLivingBase)entity);
++            int i = p_186553_3_.getLootingModifier();
+ 
+             if (i == 0)
+             {
+++++ END PATCH

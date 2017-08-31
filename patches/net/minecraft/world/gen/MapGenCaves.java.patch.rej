@@ -1,0 +1,44 @@
+++++ REJECTED PATCH 1
+                             {
+                                 if (l1 >= 0 && l1 < 256)
+                                 {
+-                                    IBlockState iblockstate = p_180702_5_.func_177856_a(j1, l1, k1);
+-
+-                                    if (iblockstate.func_177230_c() == Blocks.field_150358_i || iblockstate.func_177230_c() == Blocks.field_150355_j)
++                                    if (isOceanBlock(p_180702_5_, j1, l1, k1, p_180702_3_, p_180702_4_))
+                                     {
+                                         flag3 = true;
+                                     }
+++++ END PATCH
+++++ REJECTED PATCH 2
+                                             IBlockState iblockstate1 = p_180702_5_.func_177856_a(j3, j2, i2);
+                                             IBlockState iblockstate2 = (IBlockState)MoreObjects.firstNonNull(p_180702_5_.func_177856_a(j3, j2 + 1, i2), field_186127_b);
+ 
+-                                            if (iblockstate1.func_177230_c() == Blocks.field_150349_c || iblockstate1.func_177230_c() == Blocks.field_150391_bh)
++                                            if (isTopBlock(p_180702_5_, j3, j2, i2, p_180702_3_, p_180702_4_))
+                                             {
+                                                 flag1 = true;
+                                             }
+ 
+-                                            if (this.func_175793_a(iblockstate1, iblockstate2))
+-                                            {
+-                                                if (j2 - 1 < 10)
+-                                                {
+-                                                    p_180702_5_.func_177855_a(j3, j2, i2, field_186126_a);
+-                                                }
+-                                                else
+-                                                {
+-                                                    p_180702_5_.func_177855_a(j3, j2, i2, field_186127_b);
+-
+-                                                    if (flag1 && p_180702_5_.func_177856_a(j3, j2 - 1, i2).func_177230_c() == Blocks.field_150346_d)
+-                                                    {
+-                                                        blockpos$mutableblockpos.func_181079_c(j3 + p_180702_3_ * 16, 0, i2 + p_180702_4_ * 16);
+-                                                        p_180702_5_.func_177855_a(j3, j2 - 1, i2, this.field_75039_c.func_180494_b(blockpos$mutableblockpos).field_76752_A.func_177230_c().func_176223_P());
+-                                                    }
+-                                                }
+-                                            }
++                                            digBlock(p_180702_5_, j3, j2, i2, p_180702_3_, p_180702_4_, flag1, iblockstate1, iblockstate2);
+                                         }
+                                     }
+                                 }
+++++ END PATCH

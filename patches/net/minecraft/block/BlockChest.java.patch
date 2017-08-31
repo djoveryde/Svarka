@@ -1,25 +1,22 @@
 --- ../src-base/minecraft/net/minecraft/block/BlockChest.java
 +++ ../src-work/minecraft/net/minecraft/block/BlockChest.java
-@@ -431,7 +431,7 @@
-         }
-         else
-         {
--            ILockableContainer ilockablecontainer = (TileEntityChest)tileentity;
-+            ILockableContainer ilockablecontainer = (ILockableContainer)tileentity;
+@@ -538,7 +538,7 @@
  
-             if (!p_189418_3_ && this.isBlocked(p_189418_1_, p_189418_2_))
-             {
-@@ -457,11 +457,11 @@
-                         {
-                             if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH)
-                             {
--                                ilockablecontainer = new InventoryLargeChest("container.chestDouble", ilockablecontainer, (TileEntityChest)tileentity1);
-+                                ilockablecontainer = (ILockableContainer) new InventoryLargeChest("container.chestDouble", ilockablecontainer, (ILockableContainer)tileentity1);
-                             }
-                             else
-                             {
--                                ilockablecontainer = new InventoryLargeChest("container.chestDouble", (TileEntityChest)tileentity1, ilockablecontainer);
-+                                ilockablecontainer = (ILockableContainer) new InventoryLargeChest("container.chestDouble", (ILockableContainer)tileentity1, ilockablecontainer);
-                             }
-                         }
-                     }
+     private boolean func_176456_n(World p_176456_1_, BlockPos p_176456_2_)
+     {
+-        return p_176456_1_.func_180495_p(p_176456_2_.func_177984_a()).func_185915_l();
++        return p_176456_1_.func_180495_p(p_176456_2_.func_177984_a()).isSideSolid(p_176456_1_, p_176456_2_.func_177984_a(), EnumFacing.DOWN);
+     }
+ 
+     private boolean func_176453_o(World p_176453_1_, BlockPos p_176453_2_)
+@@ -608,4 +608,10 @@
+         BASIC,
+         TRAP;
+     }
++
++    /* ======================================== FORGE START =====================================*/
++    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
++    {
++        return !func_176454_e(world, pos) && super.rotateBlock(world, pos, axis);
++    }
+ }

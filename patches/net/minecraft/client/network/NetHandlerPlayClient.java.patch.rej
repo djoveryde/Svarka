@@ -1,0 +1,72 @@
+++++ REJECTED PATCH 1
+     {
+         PacketThreadUtil.func_180031_a(p_147282_1_, this, this.field_147299_f);
+         this.field_147299_f.field_71442_b = new PlayerControllerMP(this.field_147299_f, this);
+-        this.field_147300_g = new WorldClient(this, new WorldSettings(0L, p_147282_1_.func_149198_e(), false, p_147282_1_.func_149195_d(), p_147282_1_.func_149196_i()), p_147282_1_.func_149194_f(), p_147282_1_.func_149192_g(), this.field_147299_f.field_71424_I);
++        this.field_147300_g = new WorldClient(this, new WorldSettings(0L, p_147282_1_.func_149198_e(), false, p_147282_1_.func_149195_d(), p_147282_1_.func_149196_i()), net.minecraftforge.fml.common.network.handshake.NetworkDispatcher.get(func_147298_b()).getOverrideDimension(p_147282_1_), p_147282_1_.func_149192_g(), this.field_147299_f.field_71424_I);
+         this.field_147299_f.field_71474_y.field_74318_M = p_147282_1_.func_149192_g();
+         this.field_147299_f.func_71403_a(this.field_147300_g);
+         this.field_147299_f.field_71439_g.field_71093_bK = p_147282_1_.func_149194_f();
+++++ END PATCH
+++++ REJECTED PATCH 2
+ 
+             if (tileentity != null)
+             {
+-                tileentity.func_145839_a(nbttagcompound);
++                tileentity.handleUpdateTag(nbttagcompound);
+             }
+         }
+     }
+++++ END PATCH
+++++ REJECTED PATCH 3
+     public void func_147251_a(SPacketChat p_147251_1_)
+     {
+         PacketThreadUtil.func_180031_a(p_147251_1_, this, this.field_147299_f);
+-        this.field_147299_f.field_71456_v.func_191742_a(p_147251_1_.func_192590_c(), p_147251_1_.func_148915_c());
++        net.minecraft.util.text.ITextComponent message = net.minecraftforge.event.ForgeEventFactory.onClientChat(p_147251_1_.func_192590_c(), p_147251_1_.func_148915_c());
++        if (message == null) return;
++        this.field_147299_f.field_71456_v.func_191742_a(p_147251_1_.func_192590_c(), message);
+     }
+ 
+     public void func_147279_a(SPacketAnimation p_147279_1_)
+++++ END PATCH
+++++ REJECTED PATCH 4
+ 
+                     if (entity1 == this.field_147299_f.field_71439_g && !flag)
+                     {
+-                        this.field_147299_f.field_71456_v.func_110326_a(I18n.func_135052_a("mount.onboard", GameSettings.func_74298_c(this.field_147299_f.field_71474_y.field_74311_E.func_151463_i())), false);
++                        this.field_147299_f.field_71456_v.func_110326_a(I18n.func_135052_a("mount.onboard", this.field_147299_f.field_71474_y.field_74311_E.getDisplayName()), false);
+                     }
+                 }
+             }
+++++ END PATCH
+++++ REJECTED PATCH 6
+             }
+             else if (f == 101.0F)
+             {
+-                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.movement", new Object[] {GameSettings.func_74298_c(gamesettings.field_74351_w.func_151463_i()), GameSettings.func_74298_c(gamesettings.field_74370_x.func_151463_i()), GameSettings.func_74298_c(gamesettings.field_74368_y.func_151463_i()), GameSettings.func_74298_c(gamesettings.field_74366_z.func_151463_i())}));
++                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.movement", new Object[] {gamesettings.field_74351_w.getDisplayName(), gamesettings.field_74370_x.getDisplayName(), gamesettings.field_74368_y.getDisplayName(), gamesettings.field_74366_z.getDisplayName()}));
+             }
+             else if (f == 102.0F)
+             {
+-                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.jump", new Object[] {GameSettings.func_74298_c(gamesettings.field_74314_A.func_151463_i())}));
++                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.jump", new Object[] {gamesettings.field_74314_A.getDisplayName()}));
+             }
+             else if (f == 103.0F)
+             {
+-                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.inventory", new Object[] {GameSettings.func_74298_c(gamesettings.field_151445_Q.func_151463_i())}));
++                this.field_147299_f.field_71456_v.func_146158_b().func_146227_a(new TextComponentTranslation("demo.help.inventory", new Object[] {gamesettings.field_151445_Q.getDisplayName()}));
+             }
+         }
+         else if (i == 6)
+++++ END PATCH
+++++ REJECTED PATCH 7
+ 
+         if (entity instanceof EntityLivingBase)
+         {
+-            Potion potion = Potion.func_188412_a(p_147260_1_.func_149427_e());
++            Potion potion = Potion.func_188412_a(p_147260_1_.func_149427_e() & 0xFF);
+ 
+             if (potion != null)
+             {
+++++ END PATCH

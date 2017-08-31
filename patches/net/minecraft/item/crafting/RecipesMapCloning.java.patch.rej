@@ -1,24 +1,36 @@
 ++++ REJECTED PATCH 1
- package net.minecraft.item.crafting;
- 
-+import java.util.List;
-+
- import javax.annotation.Nullable;
- import net.minecraft.init.Items;
- import net.minecraft.inventory.InventoryCrafting;
  import net.minecraft.item.ItemStack;
+ import net.minecraft.util.NonNullList;
  import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
  
 -public class RecipesMapCloning implements IRecipe
-+public class RecipesMapCloning extends ShapelessRecipes implements IRecipe
++public class RecipesMapCloning extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
  {
--    public boolean matches(InventoryCrafting inv, World worldIn)
-+    public RecipesMapCloning() {
-+		super(new ItemStack(Items.MAP, 0, -1), java.util.Arrays.asList(new ItemStack(Items.MAP, 0, 0)));
-+	}
-+
-+	public boolean matches(InventoryCrafting inv, World worldIn)
+     public boolean func_77569_a(InventoryCrafting p_77569_1_, World p_77569_2_)
      {
-         int i = 0;
-         ItemStack itemstack = null;
+++++ END PATCH
+++++ REJECTED PATCH 2
+         for (int i = 0; i < nonnulllist.size(); ++i)
+         {
+             ItemStack itemstack = p_179532_1_.func_70301_a(i);
+-
+-            if (itemstack.func_77973_b().func_77634_r())
+-            {
+-                nonnulllist.set(i, new ItemStack(itemstack.func_77973_b().func_77668_q()));
+-            }
++            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+         }
+ 
+         return nonnulllist;
+++++ END PATCH
+++++ REJECTED PATCH 3
+         return true;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public boolean func_194133_a(int p_194133_1_, int p_194133_2_)
+     {
+         return p_194133_1_ >= 3 && p_194133_2_ >= 3;
 ++++ END PATCH

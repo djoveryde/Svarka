@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+     public static DataFixer func_188279_a()
+     {
+         DataFixer datafixer = new DataFixer(1241);
++        datafixer = new net.minecraftforge.common.util.CompoundDataFixer(datafixer);
+         WorldInfo.func_189967_a(datafixer);
+         EntityPlayerMP.func_191522_a(datafixer);
+         EntityPlayer.func_189806_a(datafixer);
+++++ END PATCH

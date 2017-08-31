@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ 
+ import net.minecraft.nbt.NBTTagCompound;
+ 
+-public abstract class WorldSavedData
++public abstract class WorldSavedData implements net.minecraftforge.common.util.INBTSerializable<NBTTagCompound>
+ {
+     public final String field_76190_i;
+     private boolean field_76189_a;
+++++ END PATCH

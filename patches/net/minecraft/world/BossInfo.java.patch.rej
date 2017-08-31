@@ -1,0 +1,28 @@
+++++ REJECTED PATCH 1
+ 
+ import java.util.UUID;
+ import net.minecraft.util.text.ITextComponent;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+ public abstract class BossInfo
+ {
+++++ END PATCH
+++++ REJECTED PATCH 2
+         return this.field_186751_c;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public void func_186745_a(BossInfo.Color p_186745_1_)
+     {
+         this.field_186751_c = p_186745_1_;
+++++ END PATCH
+++++ REJECTED PATCH 3
+         return this.field_186752_d;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public void func_186746_a(BossInfo.Overlay p_186746_1_)
+     {
+         this.field_186752_d = p_186746_1_;
+++++ END PATCH

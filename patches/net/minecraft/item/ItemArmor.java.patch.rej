@@ -1,0 +1,31 @@
+++++ REJECTED PATCH 1
+ 
+     public boolean func_82789_a(ItemStack p_82789_1_, ItemStack p_82789_2_)
+     {
+-        return this.field_77878_bZ.func_151685_b() == p_82789_2_.func_77973_b() ? true : super.func_82789_a(p_82789_1_, p_82789_2_);
++        ItemStack mat = this.field_77878_bZ.getRepairItemStack();
++        if (!mat.func_190926_b() && net.minecraftforge.oredict.OreDictionary.itemMatches(mat,p_82789_2_,false)) return true;
++        return super.func_82789_a(p_82789_1_, p_82789_2_);
+     }
+ 
+     public ActionResult<ItemStack> func_77659_a(World p_77659_1_, EntityPlayer p_77659_2_, EnumHand p_77659_3_)
+++++ END PATCH
+++++ REJECTED PATCH 3
+         private final int field_78055_h;
+         private final SoundEvent field_185020_j;
+         private final float field_189417_k;
++        //Added by forge for custom Armor materials.
++        public ItemStack repairMaterial = ItemStack.field_190927_a;
+ 
+         private ArmorMaterial(String p_i47117_3_, int p_i47117_4_, int[] p_i47117_5_, int p_i47117_6_, SoundEvent p_i47117_7_, float p_i47117_8_)
+         {
+++++ END PATCH
+++++ REJECTED PATCH 4
+             return this.field_185020_j;
+         }
+ 
++        @Deprecated // Use getRepairItemStack below
+         public Item func_151685_b()
+         {
+             if (this == LEATHER)
+++++ END PATCH

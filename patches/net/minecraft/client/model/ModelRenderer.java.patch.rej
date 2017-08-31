@@ -1,0 +1,45 @@
+++++ REJECTED PATCH 1
+ import net.minecraftforge.fml.relauncher.Side;
+ import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-@SideOnly(Side.CLIENT)
+ public class ModelRenderer
+ {
+     public float field_78801_a;
+++++ END PATCH
+++++ REJECTED PATCH 2
+         this.field_78798_e = p_78793_3_;
+     }
+ 
++    @SideOnly(Side.CLIENT)
+     public void func_78785_a(float p_78785_1_)
+     {
+         if (!this.field_78807_k)
+++++ END PATCH
+++++ REJECTED PATCH 3
+         }
+     }
+ 
++    @SideOnly(Side.CLIENT)
+     public void func_78791_b(float p_78791_1_)
+     {
+         if (!this.field_78807_k)
+++++ END PATCH
+++++ REJECTED PATCH 4
+         }
+     }
+ 
++    @SideOnly(Side.CLIENT)
+     public void func_78794_c(float p_78794_1_)
+     {
+         if (!this.field_78807_k)
+++++ END PATCH
+++++ REJECTED PATCH 5
+         }
+     }
+ 
++    @SideOnly(Side.CLIENT)
+     private void func_78788_d(float p_78788_1_)
+     {
+         this.field_78811_r = GLAllocation.func_74526_a(1);
+++++ END PATCH

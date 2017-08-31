@@ -1,0 +1,18 @@
+++++ REJECTED PATCH 1
+ 
+     public void func_180653_a(World p_180653_1_, BlockPos p_180653_2_, IBlockState p_180653_3_, float p_180653_4_, int p_180653_5_)
+     {
+-        ItemStack itemstack = this.func_185549_e(p_180653_1_, p_180653_2_);
+-
+-        if (itemstack.func_190926_b())
+         {
+             super.func_180653_a(p_180653_1_, p_180653_2_, p_180653_3_, p_180653_4_, p_180653_5_);
+         }
+-        else
+-        {
+-            func_180635_a(p_180653_1_, p_180653_2_, itemstack);
+-        }
+     }
+ 
+     public boolean func_176196_c(World p_176196_1_, BlockPos p_176196_2_)
+++++ END PATCH

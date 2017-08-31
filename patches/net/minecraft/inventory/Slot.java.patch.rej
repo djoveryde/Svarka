@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+     @SideOnly(Side.CLIENT)
+     public String func_178171_c()
+     {
+-        return null;
++        return backgroundName;
+     }
+ 
+     public ItemStack func_75209_a(int p_75209_1_)
+++++ END PATCH

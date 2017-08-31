@@ -1,0 +1,63 @@
+++++ REJECTED PATCH 1
+     private int field_191941_t;
+     private int field_191942_u;
+     private boolean field_191944_v;
++    private static int tabPage, maxPages;
+ 
+     public GuiScreenAdvancements(ClientAdvancementManager p_i47383_1_)
+     {
+++++ END PATCH
+++++ REJECTED PATCH 3
+ 
+             for (GuiAdvancementTab guiadvancementtab : this.field_191947_i.values())
+             {
+-                if (guiadvancementtab.func_191793_c(i, j, p_73864_1_, p_73864_2_))
++                if (guiadvancementtab.getPage() == tabPage && guiadvancementtab.func_191793_c(i, j, p_73864_1_, p_73864_2_))
+                 {
+                     this.field_191946_h.func_194230_a(guiadvancementtab.func_193935_c(), true);
+                     break;
+++++ END PATCH
+++++ REJECTED PATCH 4
+         this.func_146276_q_();
+         this.func_191936_c(p_73863_1_, p_73863_2_, i, j);
+         this.func_191934_b(i, j);
++        super.func_73863_a(p_73863_1_, p_73863_2_, p_73863_3_);
++        if (maxPages != 0)
++        {
++            String page = String.format("%d / %d", tabPage + 1, maxPages + 1);
++            int width = this.field_146289_q.func_78256_a(page);
++            GlStateManager.func_179140_f();
++            this.field_146289_q.func_175063_a(page, i + (252 / 2) - (width / 2), j - 44, -1);
++        }
+         this.func_191937_d(p_73863_1_, p_73863_2_, i, j);
+     }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 5
+ 
+             for (GuiAdvancementTab guiadvancementtab : this.field_191947_i.values())
+             {
++                if(guiadvancementtab.getPage() == tabPage)
+                 guiadvancementtab.func_191798_a(p_191934_1_, p_191934_2_, guiadvancementtab == this.field_191940_s);
+             }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 6
+ 
+             for (GuiAdvancementTab guiadvancementtab1 : this.field_191947_i.values())
+             {
++                if(guiadvancementtab1.getPage() == tabPage)
+                 guiadvancementtab1.func_191796_a(p_191934_1_, p_191934_2_, this.field_146296_j);
+             }
+ 
+++++ END PATCH
+++++ REJECTED PATCH 7
+         {
+             for (GuiAdvancementTab guiadvancementtab : this.field_191947_i.values())
+             {
+-                if (guiadvancementtab.func_191793_c(p_191937_3_, p_191937_4_, p_191937_1_, p_191937_2_))
++                if (guiadvancementtab.getPage() == tabPage && guiadvancementtab.func_191793_c(p_191937_3_, p_191937_4_, p_191937_1_, p_191937_2_))
+                 {
+                     this.func_146279_a(guiadvancementtab.func_191795_d(), p_191937_1_, p_191937_2_);
+                 }
+++++ END PATCH

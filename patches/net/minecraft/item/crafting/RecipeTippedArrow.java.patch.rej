@@ -1,22 +1,22 @@
 ++++ REJECTED PATCH 1
  import net.minecraft.potion.PotionUtils;
+ import net.minecraft.util.NonNullList;
  import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
  
 -public class RecipeTippedArrow implements IRecipe
-+public class RecipeTippedArrow extends ShapedRecipes implements IRecipe
++public class RecipeTippedArrow extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
  {
--    private static final ItemStack[] EMPTY_ITEMS = new ItemStack[9];
-+    public RecipeTippedArrow() {
-+    	super(3, 3, new ItemStack[]{
-+    			new ItemStack(Items.ARROW, 0), new ItemStack(Items.ARROW, 0), new ItemStack(Items.ARROW, 0),
-+    			new ItemStack(Items.ARROW, 0), new ItemStack(Items.LINGERING_POTION, 0), new ItemStack(Items.ARROW, 0),
-+    			new ItemStack(Items.ARROW, 0), new ItemStack(Items.ARROW, 0), new ItemStack(Items.ARROW, 0)
-+    	}, new ItemStack(Items.TIPPED_ARROW, 8));
-+	}
- 
-+	private static final ItemStack[] EMPTY_ITEMS = new ItemStack[9];
-+
-     public boolean matches(InventoryCrafting inv, World worldIn)
+     public boolean func_77569_a(InventoryCrafting p_77569_1_, World p_77569_2_)
      {
-         if (inv.getWidth() == 3 && inv.getHeight() == 3)
+++++ END PATCH
+++++ REJECTED PATCH 2
+         return true;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public boolean func_194133_a(int p_194133_1_, int p_194133_2_)
+     {
+         return p_194133_1_ >= 2 && p_194133_2_ >= 2;
 ++++ END PATCH

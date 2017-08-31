@@ -1,0 +1,27 @@
+++++ REJECTED PATCH 1
+         if (p_180546_1_.func_145835_a(this.field_147560_j, this.field_147561_k, this.field_147558_l) < p_180546_1_.func_145833_n())
+         {
+             RenderHelper.func_74519_b();
++            if(!drawingBatch || !p_180546_1_.hasFastRenderer())
++            {
+             int i = this.field_147550_f.func_175626_b(p_180546_1_.func_174877_v(), 0);
+             int j = i % 65536;
+             int k = i / 65536;
+             OpenGlHelper.func_77475_a(OpenGlHelper.field_77476_b, (float)j, (float)k);
+             GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
++            }
+             BlockPos blockpos = p_180546_1_.func_174877_v();
+             this.func_192854_a(p_180546_1_, (double)blockpos.func_177958_n() - field_147554_b, (double)blockpos.func_177956_o() - field_147555_c, (double)blockpos.func_177952_p() - field_147552_d, p_180546_2_, p_180546_3_, 1.0F);
+         }
+++++ END PATCH
+++++ REJECTED PATCH 2
+         {
+             try
+             {
++                if(drawingBatch && p_192854_1_.hasFastRenderer())
++                    tileentityspecialrenderer.renderTileEntityFast(p_192854_1_, p_192854_2_, p_192854_4_, p_192854_6_, p_192854_8_, p_192854_9_, p_192854_10_, batchBuffer.func_178180_c());
++                else
+                 tileentityspecialrenderer.func_192841_a(p_192854_1_, p_192854_2_, p_192854_4_, p_192854_6_, p_192854_8_, p_192854_9_, p_192854_10_);
+             }
+             catch (Throwable throwable)
+++++ END PATCH

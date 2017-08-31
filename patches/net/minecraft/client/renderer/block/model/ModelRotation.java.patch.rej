@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ import org.lwjgl.util.vector.Vector3f;
+ 
+ @SideOnly(Side.CLIENT)
+-public enum ModelRotation
++public enum ModelRotation implements net.minecraftforge.common.model.IModelState, net.minecraftforge.common.model.ITransformation
+ {
+     X0_Y0(0, 0),
+     X0_Y90(0, 90),
+++++ END PATCH

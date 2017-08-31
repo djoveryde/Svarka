@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+                 itextcomponent.func_150258_a(" ");
+             }
+ 
+-            ITextComponent itextcomponent1 = new TextComponentString(p_147176_1_[i]);
++            ITextComponent itextcomponent1 = net.minecraftforge.common.ForgeHooks.newChatWithLinks(p_147176_1_[i]); // Forge: links for messages
+ 
+             if (p_147176_3_)
+             {
+++++ END PATCH

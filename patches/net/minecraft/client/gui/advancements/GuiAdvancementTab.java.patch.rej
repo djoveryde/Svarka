@@ -1,0 +1,22 @@
+++++ REJECTED PATCH 1
+     private int field_191814_q = Integer.MIN_VALUE;
+     private float field_191815_r;
+     private boolean field_192992_s;
++    private int page;
+ 
+     public GuiAdvancementTab(Minecraft p_i47589_1_, GuiScreenAdvancements p_i47589_2_, AdvancementTabType p_i47589_3_, int p_i47589_4_, Advancement p_i47589_5_, DisplayInfo p_i47589_6_)
+     {
+++++ END PATCH
+++++ REJECTED PATCH 2
+         {
+             for (AdvancementTabType advancementtabtype : AdvancementTabType.values())
+             {
+-                if (p_193936_2_ < advancementtabtype.func_192650_a())
++                if ((p_193936_2_ % AdvancementTabType.field_192659_e) < advancementtabtype.func_192650_a())
+                 {
+-                    return new GuiAdvancementTab(p_193936_0_, p_193936_1_, advancementtabtype, p_193936_2_, p_193936_3_, p_193936_3_.func_192068_c());
++                    return new GuiAdvancementTab(p_193936_0_, p_193936_1_, advancementtabtype, p_193936_2_ % AdvancementTabType.field_192659_e, p_193936_2_ / AdvancementTabType.field_192659_e, p_193936_3_, p_193936_3_.func_192068_c());
+                 }
+ 
+                 p_193936_2_ -= advancementtabtype.func_192650_a();
+++++ END PATCH

@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+         return this;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public String func_150218_j()
+     {
+         if (this.func_150229_g())
+++++ END PATCH

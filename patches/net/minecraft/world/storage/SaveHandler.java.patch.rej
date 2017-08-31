@@ -1,0 +1,40 @@
+++++ REJECTED PATCH 1
+ 
+         if (file1.exists())
+         {
+-            WorldInfo worldinfo = SaveFormatOld.func_186353_a(file1, this.field_186341_a);
++            WorldInfo worldinfo = SaveFormatOld.loadAndFix(file1, this.field_186341_a, this);
+ 
+             if (worldinfo != null)
+             {
+++++ END PATCH
+++++ REJECTED PATCH 2
+             }
+         }
+ 
++        net.minecraftforge.fml.common.FMLCommonHandler.instance().confirmBackupLevelDatUse(this);
+         file1 = new File(this.field_75770_b, "level.dat_old");
+-        return file1.exists() ? SaveFormatOld.func_186353_a(file1, this.field_186341_a) : null;
++        return file1.exists() ? SaveFormatOld.loadAndFix(file1, this.field_186341_a, this) : null;
+     }
+ 
+     public void func_75755_a(WorldInfo p_75755_1_, @Nullable NBTTagCompound p_75755_2_)
+++++ END PATCH
+++++ REJECTED PATCH 4
+             }
+ 
+             file1.renameTo(file2);
++            net.minecraftforge.event.ForgeEventFactory.firePlayerSavingEvent(p_75753_1_, this.field_75771_c, p_75753_1_.func_110124_au().toString());
+         }
+         catch (Exception var5)
+         {
+++++ END PATCH
+++++ REJECTED PATCH 5
+             p_75752_1_.func_70020_e(this.field_186341_a.func_188257_a(FixTypes.PLAYER, nbttagcompound));
+         }
+ 
++        net.minecraftforge.event.ForgeEventFactory.firePlayerLoadingEvent(p_75752_1_, field_75771_c, p_75752_1_.func_110124_au().toString());
+         return nbttagcompound;
+     }
+ 
+++++ END PATCH

@@ -1,34 +1,20 @@
-++++ REJECTED PATCH 2
-                     {
-                         entityageable.setGrowingAge(-24000);
-                         entityageable.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
--                        this.worldObj.spawnEntityInWorld(entityageable);
-+                        //this.worldObj.spawnEntityInWorld(entityageable);
-+                        this.worldObj.addEntity(entityageable, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SPAWNER_EGG); // CraftBukkit
- 
-                         if (stack.hasDisplayName())
-                         {
-++++ END PATCH
-++++ REJECTED PATCH 3
-                         if (!player.capabilities.isCreativeMode)
-                         {
-                             --stack.stackSize;
-+                            // CraftBukkit start - allow less than 0 stacks as "infinite"
-+                            if (stack.stackSize == 0) {
-+                            	player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
-+                            }
-+                            // CraftBukkit end
-                         }
-                     }
-                 }
-++++ END PATCH
-++++ REJECTED PATCH 6
-     {
-         super.onLivingUpdate();
- 
--        if (this.worldObj.isRemote)
-+        if (this.worldObj.isRemote || ageLocked)
+++++ REJECTED PATCH 1
          {
-             if (this.forcedAgeTimer > 0)
+             if (!this.field_70170_p.field_72995_K)
              {
+-                Class <? extends Entity > oclass = (Class)EntityList.field_191308_b.func_82594_a(ItemMonsterPlacer.func_190908_h(itemstack));
++                Class <? extends Entity > oclass = EntityList.getClass(ItemMonsterPlacer.func_190908_h(itemstack));
+ 
+                 if (oclass != null && this.getClass() == oclass)
+                 {
+++++ END PATCH
+++++ REJECTED PATCH 2
+         }
+         else
+         {
+-            Class <? extends Entity > oclass = (Class)EntityList.field_191308_b.func_82594_a(ItemMonsterPlacer.func_190908_h(p_190669_1_));
++            Class <? extends Entity > oclass = EntityList.getClass(ItemMonsterPlacer.func_190908_h(p_190669_1_));
+             return oclass != null && p_190669_2_ == oclass;
+         }
+     }
 ++++ END PATCH

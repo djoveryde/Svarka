@@ -1,0 +1,29 @@
+++++ REJECTED PATCH 1
+ import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+ @SideOnly(Side.CLIENT)
+-public class Variant
++public class Variant implements net.minecraftforge.client.model.ISmartVariant
+ {
+     private final ResourceLocation field_188050_a;
+     private final ModelRotation field_188051_b;
+++++ END PATCH
+++++ REJECTED PATCH 2
+         return this.field_188050_a;
+     }
+ 
++    @Deprecated
+     public ModelRotation func_188048_b()
+     {
+         return this.field_188051_b;
+     }
+ 
++    public net.minecraftforge.common.model.IModelState getState()
++    {
++        return this.field_188051_b;
++    }
++
+     public boolean func_188049_c()
+     {
+         return this.field_188052_c;
+++++ END PATCH

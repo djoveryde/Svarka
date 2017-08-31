@@ -1,0 +1,73 @@
+++++ REJECTED PATCH 1
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+-public abstract class TileEntity
++public abstract class TileEntity implements net.minecraftforge.common.capabilities.ICapabilitySerializable<NBTTagCompound>
+ {
+     private static final Logger field_145852_a = LogManager.getLogger();
+     private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> field_190562_f = new RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> ();
+++++ END PATCH
+++++ REJECTED PATCH 2
+     public void func_145839_a(NBTTagCompound p_145839_1_)
+     {
+         this.field_174879_c = new BlockPos(p_145839_1_.func_74762_e("x"), p_145839_1_.func_74762_e("y"), p_145839_1_.func_74762_e("z"));
++        if (p_145839_1_.func_74764_b("ForgeData")) this.customTileData = p_145839_1_.func_74775_l("ForgeData");
++        if (this.capabilities != null && p_145839_1_.func_74764_b("ForgeCaps")) this.capabilities.deserializeNBT(p_145839_1_.func_74775_l("ForgeCaps"));
+     }
+ 
+     public NBTTagCompound func_189515_b(NBTTagCompound p_189515_1_)
+++++ END PATCH
+++++ REJECTED PATCH 3
+             p_189516_1_.func_74768_a("x", this.field_174879_c.func_177958_n());
+             p_189516_1_.func_74768_a("y", this.field_174879_c.func_177956_o());
+             p_189516_1_.func_74768_a("z", this.field_174879_c.func_177952_p());
++            if (this.customTileData != null) p_189516_1_.func_74782_a("ForgeData", this.customTileData);
++            if (this.capabilities != null) p_189516_1_.func_74782_a("ForgeCaps", this.capabilities.serializeNBT());
+             return p_189516_1_;
+         }
+     }
+++++ END PATCH
+++++ REJECTED PATCH 4
+     {
+         TileEntity tileentity = null;
+         String s = p_190200_1_.func_74779_i("id");
++        Class <? extends TileEntity > oclass = null;
+ 
+         try
+         {
+-            Class <? extends TileEntity > oclass = (Class)field_190562_f.func_82594_a(new ResourceLocation(s));
++            oclass = (Class)field_190562_f.func_82594_a(new ResourceLocation(s));
+ 
+             if (oclass != null)
+             {
+++++ END PATCH
+++++ REJECTED PATCH 5
+         catch (Throwable throwable1)
+         {
+             field_145852_a.error("Failed to create block entity {}", s, throwable1);
++            net.minecraftforge.fml.common.FMLLog.log.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
++                    s, oclass == null ? null : oclass.getName(), throwable1);
+         }
+ 
+         if (tileentity != null)
+++++ END PATCH
+++++ REJECTED PATCH 6
+             catch (Throwable throwable)
+             {
+                 field_145852_a.error("Failed to load data for block entity {}", s, throwable);
++                net.minecraftforge.fml.common.FMLLog.log.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
++                        s, oclass.getName(), throwable);
+                 tileentity = null;
+             }
+         }
+++++ END PATCH
+++++ REJECTED PATCH 7
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public double func_145835_a(double p_145835_1_, double p_145835_3_, double p_145835_5_)
+     {
+         double d0 = (double)this.field_174879_c.func_177958_n() + 0.5D - p_145835_1_;
+++++ END PATCH

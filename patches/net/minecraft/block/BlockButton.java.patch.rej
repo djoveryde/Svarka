@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+ 
+         if (p_181088_2_ == EnumFacing.UP)
+         {
+-            return block == Blocks.field_150438_bZ || !func_193384_b(block) && flag;
++            return iblockstate.func_185896_q() || !func_193384_b(block) && flag;
+         }
+         else
+         {
+++++ END PATCH

@@ -1,0 +1,47 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockFlowerPot.java
++++ ../src-work/minecraft/net/minecraft/block/BlockFlowerPot.java
+@@ -166,13 +166,6 @@
+ 
+     public void func_180663_b(World p_180663_1_, BlockPos p_180663_2_, IBlockState p_180663_3_)
+     {
+-        TileEntityFlowerPot tileentityflowerpot = this.func_176442_d(p_180663_1_, p_180663_2_);
+-
+-        if (tileentityflowerpot != null && tileentityflowerpot.func_145965_a() != null)
+-        {
+-            func_180635_a(p_180663_1_, p_180663_2_, new ItemStack(tileentityflowerpot.func_145965_a(), 1, tileentityflowerpot.func_145966_b()));
+-        }
+-
+         super.func_180663_b(p_180663_1_, p_180663_2_, p_180663_3_);
+     }
+ 
+@@ -398,6 +391,30 @@
+         return BlockFaceShape.UNDEFINED;
+     }
+ 
++
++    /*============================FORGE START=====================================*/
++    @Override
++    public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
++    {
++        super.getDrops(drops, world, pos, state, fortune);
++        TileEntityFlowerPot te = world.func_175625_s(pos) instanceof TileEntityFlowerPot ? (TileEntityFlowerPot)world.func_175625_s(pos) : null;
++        if (te != null && te.func_145965_a() != null)
++            drops.add(new ItemStack(te.func_145965_a(), 1, te.func_145966_b()));
++    }
++    @Override
++    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
++    {
++        if (willHarvest) return true; //If it will harvest, delay deletion of the block until after getDrops
++        return super.removedByPlayer(state, world, pos, player, willHarvest);
++    }
++    @Override
++    public void func_180657_a(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)
++    {
++        super.func_180657_a(world, player, pos, state, te, tool);
++        world.func_175698_g(pos);
++    }
++    /*===========================FORGE END==========================================*/
++
+     public static enum EnumFlowerType implements IStringSerializable
+     {
+         EMPTY("empty"),

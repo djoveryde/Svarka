@@ -1,65 +1,52 @@
-++++ REJECTED PATCH 4
-     protected EntityJumpHelper jumpHelper;
-     private final EntityBodyHelper bodyHelper;
-     protected PathNavigate navigator;
--    public final EntityAITasks tasks;
--    public final EntityAITasks targetTasks;
-+    public EntityAITasks tasks;
-+    public EntityAITasks targetTasks;
-     private EntityLivingBase attackTarget;
-     private final EntitySenses senses;
-     private final ItemStack[] inventoryHands = new ItemStack[2];
--    protected float[] inventoryHandsDropChances = new float[2];
-+    public float[] inventoryHandsDropChances = new float[2];
-     private final ItemStack[] inventoryArmor = new ItemStack[4];
--    protected float[] inventoryArmorDropChances = new float[4];
--    private boolean canPickUpLoot;
--    private boolean persistenceRequired;
-+    public float[] inventoryArmorDropChances = new float[4];
-+    public boolean canPickUpLoot;
-+    public boolean persistenceRequired;
-     private final Map<PathNodeType, Float> mapPathPriority = Maps.newEnumMap(PathNodeType.class);
-     private ResourceLocation deathLootTable;
-     private long deathLootTableSeed;
-++++ END PATCH
-++++ REJECTED PATCH 9
-                 double d2 = entity.posZ - this.posZ;
-                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
- 
--                if (this.canDespawn() && d3 > 16384.0D)
-+                if (/*this.canDespawn() && */d3 > 16384.0D)
-                 {
-                     this.setDead();
-                 }
- 
--                if (this.entityAge > 600 && this.rand.nextInt(800) == 0 && d3 > 1024.0D && this.canDespawn())
-+                if (this.entityAge > 600 && this.rand.nextInt(800) == 0 && d3 > 1024.0D/* && this.canDespawn()*/)
-                 {
-                     this.setDead();
-                 }
-++++ END PATCH
-++++ REJECTED PATCH 10
+++++ REJECTED PATCH 1
+     public void func_70624_b(@Nullable EntityLivingBase p_70624_1_)
      {
-         if (this.getLeashed() && this.getLeashedToEntity() == player)
+         this.field_70696_bz = p_70624_1_;
++        net.minecraftforge.common.ForgeHooks.onLivingSetAttackTarget(this, p_70624_1_);
+     }
+ 
+     public boolean func_70686_a(Class <? extends EntityLivingBase > p_70686_1_)
+++++ END PATCH
+++++ REJECTED PATCH 2
+ 
+     protected void func_70623_bb()
+     {
++        net.minecraftforge.fml.common.eventhandler.Event.Result result = null;
+         if (this.field_82179_bU)
          {
-+        	// CraftBukkit start - fire PlayerUnleashEntityEvent
-+        	if (CraftEventFactory.callPlayerUnleashEntityEvent(this, player).isCancelled()) {
-+        		((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityAttach(this, this.getLeashedToEntity()));
-+        		return false;
-+        	}
-+        	// CraftBukkit end
-             this.clearLeashed(true, !player.capabilities.isCreativeMode);
-             return true;
+             this.field_70708_bq = 0;
          }
-         else if (stack != null && stack.getItem() == Items.LEAD && this.canBeLeashedTo(player))
++        else if ((this.field_70708_bq & 0x1F) == 0x1F && (result = net.minecraftforge.event.ForgeEventFactory.canEntityDespawn(this)) != net.minecraftforge.fml.common.eventhandler.Event.Result.DEFAULT)
++        {
++            if (result == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY)
++            {
++                this.field_70708_bq = 0;
++            }
++            else
++            {
++                this.func_70106_y();
++            }
++        }
+         else
          {
-+        	// CraftBukkit start - fire PlayerLeashEntityEvent
-+        	if (CraftEventFactory.callPlayerLeashEntityEvent(this, player, player).isCancelled()) {
-+        		((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityAttach(this, this.getLeashedToEntity()));
-+        		return false;
-+        	}
-+        	// CraftBukkit end
-             this.setLeashedToEntity(player, true);
-             --stack.stackSize;
-             return true;
+             Entity entity = this.field_70170_p.func_72890_a(this, -1.0D);
+++++ END PATCH
+++++ REJECTED PATCH 3
+         return !this.field_70170_p.func_72953_d(this.func_174813_aQ()) && this.field_70170_p.func_184144_a(this, this.func_174813_aQ()).isEmpty() && this.field_70170_p.func_72917_a(this.func_174813_aQ(), this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public float func_70603_bj()
+     {
+         return 1.0F;
+++++ END PATCH
+++++ REJECTED PATCH 4
+             }
+             else
+             {
+-                return p_184640_0_.func_77973_b() == Items.field_185159_cQ ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND;
++                return p_184640_0_.func_77973_b().isShield(p_184640_0_, null) ? EntityEquipmentSlot.OFFHAND : EntityEquipmentSlot.MAINHAND;
+             }
+         }
+         else
 ++++ END PATCH

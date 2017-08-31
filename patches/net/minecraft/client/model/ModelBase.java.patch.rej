@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+ import net.minecraftforge.fml.relauncher.Side;
+ import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-@SideOnly(Side.CLIENT)
+ public abstract class ModelBase
+ {
+     public float field_78095_p;
+++++ END PATCH

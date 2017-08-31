@@ -1,116 +1,52 @@
 --- ../src-base/minecraft/net/minecraft/world/Explosion.java
 +++ ../src-work/minecraft/net/minecraft/world/Explosion.java
-@@ -13,6 +13,7 @@
- import net.minecraft.enchantment.EnchantmentProtection;
- import net.minecraft.entity.Entity;
- import net.minecraft.entity.EntityLivingBase;
-+import net.minecraft.entity.item.EntityFallingBlock;
- import net.minecraft.entity.item.EntityTNTPrimed;
- import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.init.Blocks;
-@@ -26,7 +27,18 @@
- import net.minecraft.util.math.Vec3d;
- import net.minecraftforge.fml.relauncher.Side;
- import net.minecraftforge.fml.relauncher.SideOnly;
-+import org.bukkit.Location;
-+import org.bukkit.craftbukkit.event.CraftEventFactory;
-+import org.bukkit.event.block.BlockExplodeEvent;
-+import org.bukkit.event.entity.EntityExplodeEvent;
- 
-+//CraftBukkit start
-+import org.bukkit.craftbukkit.event.CraftEventFactory;
-+import org.bukkit.event.entity.EntityExplodeEvent;
-+import org.bukkit.Location;
-+import org.bukkit.event.block.BlockExplodeEvent;
-+// CraftBukkit end
-+
- public class Explosion
- {
-     private final boolean isFlaming;
-@@ -36,11 +48,12 @@
-     private final double explosionX;
-     private final double explosionY;
-     private final double explosionZ;
--    private final Entity exploder;
-+    public final Entity exploder;
-     private final float explosionSize;
-     private final List<BlockPos> affectedBlockPositions;
-     private final Map<EntityPlayer, Vec3d> playerKnockbackMap;
-     private final Vec3d position;
-+    public boolean wasCanceled = false; // CraftBukkit - add field
+@@ -41,6 +41,7 @@
+     private final float field_77280_f;
+     private final List<BlockPos> field_77281_g;
+     private final Map<EntityPlayer, Vec3d> field_77288_k;
++    private final Vec3d position;
  
      @SideOnly(Side.CLIENT)
-     public Explosion(World worldIn, Entity entityIn, double x, double y, double z, float size, List<BlockPos> affectedPositions)
-@@ -62,7 +75,7 @@
-         this.playerKnockbackMap = Maps.<EntityPlayer, Vec3d>newHashMap();
-         this.worldObj = worldIn;
-         this.exploder = entityIn;
--        this.explosionSize = size;
-+        this.explosionSize = (float) Math.max(size, 0.0); // CraftBukkit - clamp bad values
-         this.explosionX = x;
-         this.explosionY = y;
-         this.explosionZ = z;
-@@ -155,7 +168,16 @@
-                         d9 = d9 / d13;
-                         double d14 = (double)this.worldObj.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-                         double d10 = (1.0D - d12) * d14;
--                        entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float)((int)((d10 * d10 + d10) / 2.0D * 7.0D * (double)f3 + 1.0D)));
-+                        //entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float)((int)((d10 * d10 + d10) / 2.0D * 7.0D * (double)f3 + 1.0D)));
-+                        // CraftBukkit start
-+                        CraftEventFactory.entityDamage = exploder;
-+                        entity.forceExplosionKnockback = false;
-+                        boolean wasDamaged = entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 7.0D * (double) f3 + 1.0D)));
-+                        CraftEventFactory.entityDamage = null;
-+                        if (!wasDamaged && !(entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && !entity.forceExplosionKnockback) {
-+                        	continue;
-+                        }
-+                        // CraftBukkit end
-                         double d11 = 1.0D;
+     public Explosion(World p_i45752_1_, Entity p_i45752_2_, double p_i45752_3_, double p_i45752_5_, double p_i45752_7_, float p_i45752_9_, List<BlockPos> p_i45752_10_)
+@@ -68,6 +69,7 @@
+         this.field_77282_d = p_i45754_7_;
+         this.field_77286_a = p_i45754_10_;
+         this.field_82755_b = p_i45754_11_;
++        this.position = new Vec3d(this.field_77284_b, this.field_77285_c, this.field_77282_d);
+     }
  
-                         if (entity instanceof EntityLivingBase)
-@@ -197,6 +219,45 @@
+     public void func_77278_a()
+@@ -102,7 +104,7 @@
  
-         if (this.isSmoking)
-         {
-+        	// CraftBukkit start
-+        	final org.bukkit.World bworld = this.worldObj.getWorld();
-+            final org.bukkit.entity.Entity explode = (this.exploder == null) ? null : this.exploder.getBukkitEntity();
-+            final Location location = new Location(bworld, this.explosionX, this.explosionY, this.explosionZ);
-+            final List<org.bukkit.block.Block> blockList = /*(List<Block>)*/Lists.newArrayList();
-+            for (int i1 = this.affectedBlockPositions.size() - 1; i1 >= 0; --i1) {
-+                final BlockPos cpos = this.affectedBlockPositions.get(i1);
-+                final org.bukkit.block.Block bblock = bworld.getBlockAt(cpos.getX(), cpos.getY(), cpos.getZ());
-+                if (bblock.getType() != org.bukkit.Material.AIR) {
-+                    blockList.add(bblock);
-+                }
-+            }
-+            boolean cancelled;
-+            List<org.bukkit.block.Block> bukkitBlocks;
-+            float yield;
-+            if (explode != null) {
-+                final EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 1.0f / this.explosionSize);
-+                this.worldObj.getServer().getPluginManager().callEvent(event);
-+                cancelled = event.isCancelled();
-+                bukkitBlocks = event.blockList();
-+                yield = event.getYield();
-+            }
-+            else {
-+                final BlockExplodeEvent event2 = new BlockExplodeEvent(location.getBlock(), blockList, 1.0f / this.explosionSize);
-+                this.worldObj.getServer().getPluginManager().callEvent(event2);
-+                cancelled = event2.isCancelled();
-+                bukkitBlocks = event2.blockList();
-+                yield = event2.getYield();
-+            }
-+            this.affectedBlockPositions.clear();
-+            for (final org.bukkit.block.Block bblock2 : bukkitBlocks) {
-+                final BlockPos coords = new BlockPos(bblock2.getX(), bblock2.getY(), bblock2.getZ());
-+                this.affectedBlockPositions.add(coords);
-+            }
-+            if (cancelled) {
-+                this.wasCanceled = true;
-+                return;
-+            }
-+            // CraftBukkit end
-             for (BlockPos blockpos : this.affectedBlockPositions)
-             {
-                 IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+                             if (iblockstate.func_185904_a() != Material.field_151579_a)
+                             {
+-                                float f2 = this.field_77283_e != null ? this.field_77283_e.func_180428_a(this, this.field_77287_j, blockpos, iblockstate) : iblockstate.func_177230_c().func_149638_a((Entity)null);
++                                float f2 = this.field_77283_e != null ? this.field_77283_e.func_180428_a(this, this.field_77287_j, blockpos, iblockstate) : iblockstate.func_177230_c().getExplosionResistance(field_77287_j, blockpos, (Entity)null, this);
+                                 f -= (f2 + 0.3F) * 0.3F;
+                             }
+ 
+@@ -129,6 +131,7 @@
+         int j2 = MathHelper.func_76128_c(this.field_77282_d - (double)f3 - 1.0D);
+         int j1 = MathHelper.func_76128_c(this.field_77282_d + (double)f3 + 1.0D);
+         List<Entity> list = this.field_77287_j.func_72839_b(this.field_77283_e, new AxisAlignedBB((double)k1, (double)i2, (double)j2, (double)l1, (double)i1, (double)j1));
++        net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.field_77287_j, this, list, f3);
+         Vec3d vec3d = new Vec3d(this.field_77284_b, this.field_77285_c, this.field_77282_d);
+ 
+         for (int k2 = 0; k2 < list.size(); ++k2)
+@@ -228,8 +231,7 @@
+                         block.func_180653_a(this.field_77287_j, blockpos, this.field_77287_j.func_180495_p(blockpos), 1.0F / this.field_77280_f, 0);
+                     }
+ 
+-                    this.field_77287_j.func_180501_a(blockpos, Blocks.field_150350_a.func_176223_P(), 3);
+-                    block.func_180652_a(this.field_77287_j, blockpos, this);
++                    block.onBlockExploded(this.field_77287_j, blockpos, this);
+                 }
+             }
+         }
+@@ -277,4 +279,6 @@
+     {
+         return this.field_77281_g;
+     }
++
++    public Vec3d getPosition(){ return this.position; }
+ }

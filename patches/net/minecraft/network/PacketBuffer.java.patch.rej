@@ -1,10 +1,10 @@
 ++++ REJECTED PATCH 1
  
-     public <T extends Enum<T>> T readEnumValue(Class<T> enumClass)
-     {
--        return (T)((Enum[])enumClass.getEnumConstants())[this.readVarIntFromBuffer()];
-+        return (T)(enumClass.getEnumConstants())[this.readVarIntFromBuffer()];
-     }
+             if (p_150788_1_.func_77973_b().func_77645_m() || p_150788_1_.func_77973_b().func_77651_p())
+             {
+-                nbttagcompound = p_150788_1_.func_77978_p();
++                nbttagcompound = p_150788_1_.func_77973_b().getNBTShareTag(p_150788_1_);
+             }
  
-     public PacketBuffer writeEnumValue(Enum<?> value)
+             this.func_150786_a(nbttagcompound);
 ++++ END PATCH

@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+         return stringbuilder.toString();
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public final String func_150254_d()
+     {
+         StringBuilder stringbuilder = new StringBuilder();
+++++ END PATCH

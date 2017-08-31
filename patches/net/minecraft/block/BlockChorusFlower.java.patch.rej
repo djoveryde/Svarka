@@ -1,0 +1,10 @@
+++++ REJECTED PATCH 1
+             {
+                 int i = ((Integer)p_180650_3_.func_177229_b(field_185607_a)).intValue();
+ 
+-                if (i < 5 && p_180650_4_.nextInt(1) == 0)
++                if (i < 5 &&  net.minecraftforge.common.ForgeHooks.onCropsGrowPre(p_180650_1_, blockpos, p_180650_3_, p_180650_4_.nextInt(1) == 0))
+                 {
+                     boolean flag = false;
+                     boolean flag1 = false;
+++++ END PATCH

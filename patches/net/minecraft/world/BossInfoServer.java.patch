@@ -1,20 +1,27 @@
 --- ../src-base/minecraft/net/minecraft/world/BossInfoServer.java
 +++ ../src-work/minecraft/net/minecraft/world/BossInfoServer.java
-@@ -14,7 +14,7 @@
- {
-     private final Set<EntityPlayerMP> players = Sets.<EntityPlayerMP>newHashSet();
-     private final Set<EntityPlayerMP> readOnlyPlayers;
--    private boolean visible;
-+    public boolean visible;
+@@ -9,8 +9,6 @@
+ import net.minecraft.network.play.server.SPacketUpdateBossInfo;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.text.ITextComponent;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
  
-     public BossInfoServer(ITextComponent nameIn, BossInfo.Color colorIn, BossInfo.Overlay overlayIn)
-     {
-@@ -92,7 +92,7 @@
+ public class BossInfoServer extends BossInfo
+ {
+@@ -34,7 +32,6 @@
          }
      }
  
--    private void sendUpdate(SPacketUpdateBossInfo.Operation operationIn)
-+    public void sendUpdate(SPacketUpdateBossInfo.Operation operationIn)
+-    @SideOnly(Side.CLIENT)
+     public void func_186745_a(BossInfo.Color p_186745_1_)
      {
-         if (this.visible)
-         {
+         if (p_186745_1_ != this.field_186751_c)
+@@ -44,7 +41,6 @@
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public void func_186746_a(BossInfo.Overlay p_186746_1_)
+     {
+         if (p_186746_1_ != this.field_186752_d)

@@ -1,0 +1,22 @@
+++++ REJECTED PATCH 1
+ 
+         if (itextureobject != null)
+         {
++            this.field_110585_a.remove(p_147645_1_); // Forge: fix MC-98707
+             TextureUtil.func_147942_a(itextureobject.func_110552_b());
+         }
+     }
+ 
+     public void func_110549_a(IResourceManager p_110549_1_)
+     {
++        net.minecraftforge.fml.common.ProgressManager.ProgressBar bar = net.minecraftforge.fml.common.ProgressManager.push("Reloading Texture Manager", this.field_110585_a.keySet().size(), true);
+         Iterator<Entry<ResourceLocation, ITextureObject>> iterator = this.field_110585_a.entrySet().iterator();
+ 
+         while (iterator.hasNext())
+         {
+             Entry<ResourceLocation, ITextureObject> entry = (Entry)iterator.next();
++            bar.step(entry.getKey().toString());
+             ITextureObject itextureobject = entry.getValue();
+ 
+             if (itextureobject == TextureUtil.field_111001_a)
+++++ END PATCH

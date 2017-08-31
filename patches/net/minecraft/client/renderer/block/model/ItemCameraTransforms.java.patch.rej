@@ -1,0 +1,48 @@
+++++ REJECTED PATCH 1
+ import net.minecraftforge.fml.relauncher.SideOnly;
+ import org.lwjgl.util.vector.Quaternion;
+ 
++/*
++ * @deprecated use {@link net.minecraftforge.client.model.IPerspectiveAwareModel} instead
++ */
+ @SideOnly(Side.CLIENT)
+ public class ItemCameraTransforms
+ {
+++++ END PATCH
+++++ REJECTED PATCH 2
+         this(ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a, ItemTransformVec3f.field_178366_a);
+     }
+ 
++    @Deprecated
+     public ItemCameraTransforms(ItemCameraTransforms p_i46443_1_)
+     {
+         this.field_188036_k = p_i46443_1_.field_188036_k;
+++++ END PATCH
+++++ REJECTED PATCH 3
+         this.field_181700_p = p_i46443_1_.field_181700_p;
+     }
+ 
++    @Deprecated
+     public ItemCameraTransforms(ItemTransformVec3f p_i46569_1_, ItemTransformVec3f p_i46569_2_, ItemTransformVec3f p_i46569_3_, ItemTransformVec3f p_i46569_4_, ItemTransformVec3f p_i46569_5_, ItemTransformVec3f p_i46569_6_, ItemTransformVec3f p_i46569_7_, ItemTransformVec3f p_i46569_8_)
+     {
+         this.field_188036_k = p_i46569_1_;
+++++ END PATCH
+++++ REJECTED PATCH 4
+         return new Quaternion(f3 * f6 * f8 + f4 * f5 * f7, f4 * f5 * f8 - f3 * f6 * f7, f3 * f5 * f8 + f4 * f6 * f7, f4 * f6 * f8 - f3 * f5 * f7);
+     }
+ 
++    @Deprecated
+     public ItemTransformVec3f func_181688_b(ItemCameraTransforms.TransformType p_181688_1_)
+     {
+         switch (p_181688_1_)
+++++ END PATCH
+++++ REJECTED PATCH 5
+         }
+ 
+     @SideOnly(Side.CLIENT)
+-    public static enum TransformType
++    public static enum TransformType implements net.minecraftforge.common.model.IModelPart
+     {
+         NONE,
+         THIRD_PERSON_LEFT_HAND,
+++++ END PATCH

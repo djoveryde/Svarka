@@ -1,0 +1,28 @@
+++++ REJECTED PATCH 1
+ import net.minecraft.network.play.server.SPacketUpdateBossInfo;
+ import net.minecraft.util.math.MathHelper;
+ import net.minecraft.util.text.ITextComponent;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+ public class BossInfoServer extends BossInfo
+ {
+++++ END PATCH
+++++ REJECTED PATCH 2
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public void func_186745_a(BossInfo.Color p_186745_1_)
+     {
+         if (p_186745_1_ != this.field_186751_c)
+++++ END PATCH
+++++ REJECTED PATCH 3
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+     public void func_186746_a(BossInfo.Overlay p_186746_1_)
+     {
+         if (p_186746_1_ != this.field_186752_d)
+++++ END PATCH

@@ -1,0 +1,8 @@
+++++ REJECTED PATCH 1
+         }
+ 
+         this.field_75228_b = 0;
++        net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerSmeltedEvent(field_75229_a, p_75208_1_);
+     }
+ }
+++++ END PATCH

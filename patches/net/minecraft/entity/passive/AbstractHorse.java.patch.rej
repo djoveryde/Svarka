@@ -1,0 +1,9 @@
+++++ REJECTED PATCH 1
+ 
+         this.field_110296_bG.func_110134_a(this);
+         this.func_110232_cE();
++        this.itemHandler = new net.minecraftforge.items.wrapper.InvWrapper(this.field_110296_bG);
+     }
+ 
+     protected void func_110232_cE()
+++++ END PATCH

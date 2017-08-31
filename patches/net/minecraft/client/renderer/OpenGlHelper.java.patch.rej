@@ -1,0 +1,12 @@
+++++ REJECTED PATCH 1
+     public static int field_176089_P;
+     public static int field_148826_e;
+ 
++    /* Stores the last values sent into setLightmapTextureCoords */
++    public static float lastBrightnessX = 0.0f;
++    public static float lastBrightnessY = 0.0f;
++
+     public static void func_77474_a()
+     {
+         ContextCapabilities contextcapabilities = GLContext.getCapabilities();
+++++ END PATCH

@@ -1,10 +1,30 @@
-++++ REJECTED PATCH 1
+++++ REJECTED PATCH 2
+         final EnumConnectionState enumconnectionstate = EnumConnectionState.func_150752_a(p_150732_1_);
+         final EnumConnectionState enumconnectionstate1 = (EnumConnectionState)this.field_150746_k.attr(field_150739_c).get();
  
-     public void setNetHandler(INetHandler handler)
-     {
--        Validate.notNull(handler, "packetListener", new Object[0]);
-+        Validate.notNull(handler, "packetListener");
-         LOGGER.debug("Set listener of {} to {}", new Object[] {this, handler});
-         this.packetListener = handler;
-     }
+-        if (enumconnectionstate1 != enumconnectionstate)
++        if (enumconnectionstate1 != enumconnectionstate && !( p_150732_1_ instanceof net.minecraftforge.fml.common.network.internal.FMLProxyPacket))
+         {
+             field_150735_g.debug("Disabled auto read");
+             this.field_150746_k.config().setAutoRead(false);
+++++ END PATCH
+++++ REJECTED PATCH 3
+ 
+         if (this.field_150746_k.eventLoop().inEventLoop())
+         {
+-            if (enumconnectionstate != enumconnectionstate1)
++            if (enumconnectionstate != enumconnectionstate1 && !( p_150732_1_ instanceof net.minecraftforge.fml.common.network.internal.FMLProxyPacket))
+             {
+                 this.func_150723_a(enumconnectionstate);
+             }
+++++ END PATCH
+++++ REJECTED PATCH 4
+             {
+                 public void run()
+                 {
+-                    if (enumconnectionstate != enumconnectionstate1)
++                    if (enumconnectionstate != enumconnectionstate1  && !( p_150732_1_ instanceof net.minecraftforge.fml.common.network.internal.FMLProxyPacket))
+                     {
+                         NetworkManager.this.func_150723_a(enumconnectionstate);
+                     }
 ++++ END PATCH
