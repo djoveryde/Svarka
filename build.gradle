@@ -12,8 +12,8 @@ buildscript {
     }
     dependencies {
 		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-		//files('SForgeGradle-2.2-SNAPSHOT.jar')
-		//'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		//files('SForgeGradle-2.3-SNAPSHOT.jar')
+		//'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
 		//classpath files('FG.jar')
 	}
 }
@@ -23,7 +23,7 @@ apply plugin: 'net.minecraftforge.gradle.patcher'
 apply plugin: 'net.minecraftforge.gradle.launch4j'
 
 group = 'fewizz.svarka'
-version = '0.0.2'
+version = '0.0.3'
 
 //afterEvaluate {
 //	patchSvarkaJar.addInject file('bukkit/src/main/java/')
@@ -49,7 +49,7 @@ tasks.withType(JavaCompile) {
 
 minecraft {
     version = "1.12.1"
-    mappings = 'snapshot_nodoc_20170831'
+    mappings = 'snapshot_nodoc_20170902'
     workspaceDir = "projects"
     versionJson = "jsons/1.12.1-dev.json"
     buildUserdev = true
